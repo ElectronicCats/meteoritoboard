@@ -2,9 +2,9 @@
 
 ![meteorito2](https://github.com/ElectronicCats/meteoritoboard/raw/master/LogoMeteorito.png )
 
-Kit de estación meteorologica para "Curso de estación y fenómenos meteorológicos" meteorito
+Kit de estación meteorologica para "Curso de estación y fenómenos meteorológicos" que funciona con La Red Meteorológica Ambiental([RedMet](http://redmet.org/)) promueve la difusión y concientización del cambio climático global. 
 
-Manual, Guía de Arranque, Curso Completo y mas información en [Pagina Oficial](http://meteorito.mx/index.html)
+Manual, guía de arranque, curso completo y más información en [Pagina Oficial](http://meteorito.mx/index.html)
 
 Electronic Cats invests time and resources providing this open source design, please support Electronic Cats and open-source hardware by purchasing products from Electronic Cats!
 
