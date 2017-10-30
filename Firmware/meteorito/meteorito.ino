@@ -30,7 +30,7 @@ const char* ssid = "NombreDeTuWiFi";
 const char* password = "ContraseñadetuWiFi";
 
 //Pagina de conexión con el servidor
-const char Servidor[] PROGMEM = "redmet.org";
+const char* Servidor  = "redmet.org";
 
 //Token de acceso a redmet.org
 const String Token = "YTQwZjlkYTEtZjlkYi00YmVjLTg5NjktZWM1MDFlZDI4ZDUxOjA0ZGNkMDUxLTY0YWUtNDFlZi05OTY0LTliYjFiYzAwNjc4Yg==";
