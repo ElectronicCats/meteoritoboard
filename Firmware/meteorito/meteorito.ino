@@ -25,7 +25,7 @@ Bajo Licencia MIT
 ************************************************************/
 //Incluir la biblioteca WiFi
 #include <ESP8266WiFi.h>
-#include "claves.h"
+#include "configuracion.h"
 
 //Formamos el header para enviar a la pagina
 String httpHeader = "POST /api/device/metrics HTTP/1.1\r\n"
