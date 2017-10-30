@@ -25,15 +25,7 @@ Bajo Licencia MIT
 ************************************************************/
 //Incluir la biblioteca WiFi
 #include <ESP8266WiFi.h>
-
-const char* ssid = "NombreDeTuWiFi";
-const char* password = "ContraseñadetuWiFi";
-
-//Pagina de conexión con el servidor
-const char* Servidor  = "redmet.org";
-
-//Token de acceso a redmet.org
-const String Token = "YTQwZjlkYTEtZjlkYi00YmVjLTg5NjktZWM1MDFlZDI4ZDUxOjA0ZGNkMDUxLTY0YWUtNDFlZi05OTY0LTliYjFiYzAwNjc4Yg==";
+#include "claves.h"
 
 //Formamos el header para enviar a la pagina
 String httpHeader = "POST /api/device/metrics HTTP/1.1\r\n"
@@ -73,12 +65,12 @@ static void envioDatos () {
   
   //Ejemplo con un solo valor
   //String dato="{\"data\":{\"temp\":15}}";
-  
+
   //Ejemplo con todos los valores posibles
-  //String dato="{\"data\":{\"clouds\":D}{\"humidity\":95}{\"pressure\":145}{\"rain\":245}{\"temp\":15}{\"uv\":13}{\"windDirection\":9}{\"windSpeed\":340}}";
+  //String dato="{\"data\":{\"clouds\":\"D\",\"humidity\":95,\"pressure\":145,\"rain\":245,\"temp\":15,\"uv\":13,\"windDirection\":9,\"windSpeed\":340}}";
   
   //Lectura de todos los valores posibles
-  String dato="{\"data\":{\"clouds\":\""+params1+"\"}{\"humidity\":\""+params2+"\"}{\"pressure\":\""+params3+"\"}{\"rain\":\""+params4+"\"}{\"temp\":\""+params5+"\"}{\"uv\":\""+params6+"\"}{\"windDirection\":\""+params7+"\"}{\"windSpeed\":\""+params8+"\"}}";
+  String dato="{\"data\":{\"clouds\":\""+params1+"\",\"humidity\":\""+params2+"\",\"pressure\":\""+params3+"\",\"rain\":\""+params4+"\",\"temp\":\""+params5+"\",\"uv\":\""+params6+"\",\"windDirection\":\""+params7+"\",\"windSpeed\":\""+params8+"\"}}";
   
   Serial.println(F("Enviando datos!"));
   //Serial.println(dato.length());
