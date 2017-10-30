@@ -39,7 +39,7 @@ const String Token = "YTQwZjlkYTEtZjlkYi00YmVjLTg5NjktZWM1MDFlZDI4ZDUxOjA0ZGNkMD
 String httpHeader = "POST /api/device/metrics HTTP/1.1\r\n"
                     "Host: redmet.org\r\n" 
                     "Content-Type: application/json\r\n"
-                    "Authorization: "+ Token +"\r\n";
+                    "Authorization: Basic "+ Token +"\r\n";
 
 //Inicializar el WiFi cliente objeto
 WiFiClient client;
