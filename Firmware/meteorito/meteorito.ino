@@ -1,5 +1,5 @@
 /*******************************************************
-ESP8266Meteorito.ino
+Meteorito.ino
 Ejemplo de Estacion Meteorologica con ESP8266 
 para redmet.org y Meteorito
 Andres Sabas @ The Inventor's House
