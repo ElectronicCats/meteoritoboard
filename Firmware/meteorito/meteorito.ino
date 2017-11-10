@@ -27,6 +27,14 @@ Bajo Licencia MIT
 #include <ESP8266WiFi.h>
 #include "configuracion.h"
 
+const char tipoNubosidad[5]={'C','M','N','P','D'};
+  /* D - despejado
+   * P - poco nuboso
+   * N - nuboso
+   * M - muy nuboso
+   * C - cubierto
+   */
+
 //Formamos el header para enviar a la pagina
 String httpHeader = "POST /api/device/metrics HTTP/1.1\r\n"
                     "Host: redmet.org\r\n" 
@@ -35,6 +43,15 @@ String httpHeader = "POST /api/device/metrics HTTP/1.1\r\n"
 
 //Inicializar el WiFi cliente objeto
 WiFiClient client;
+
+
+char nubosidad() {
+  int lecturaSensor=analogRead(A0);
+  char nubosidad = tipoNubosidad[map(lecturaSensor, 300, 1023, 0, 5)];
+  Serial.print("Nubosidad: ");
+  Serial.println(nubosidad);
+  return nubosidad;
+}
 
 /*
  *Función de envio de datos 
@@ -51,7 +68,7 @@ static void envioDatos () {
   /*clouds, humidity, pressure, rain, temp, uv, windDirection, windSpeed*/
   String params1, params2,params3,params4,params5,params6,params7,params8;
   
-  params1 = "D";
+  params1 = nubosidad();
   params2 = String(random(0,100));
   params3 = String(random(0,150));
   params4 = String(random(0,250));
