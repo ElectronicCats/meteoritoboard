@@ -70,14 +70,14 @@ static void envioDatos () {
   Serial.println(F("Connected."));
 
   //Asignar parametros a enviar:
-  /*clouds, humidity, pressure, rain, temp, uv, windDirection, windSpeed*/
+         /*clouds, humidity, pressure, rain, temp, uv, windDirection, windSpeed*/
   String params1, params2,params3,params4,params5,params6,params7,params8;
   
-  params1 = nubosidad();
-  params2 = String(random(0,100));
+  params1 = "D";
+  params2 = String(humedad);
   params3 = String(random(0,150));
   params4 = String(random(0,250));
-  params5 = String(random(0,50));
+  params5 = String(temperatura);
   params6 = String(random(0,15));
   params7 = String(random(0,10));
   params8 = String(random(0,360));
