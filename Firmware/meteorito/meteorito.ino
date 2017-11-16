@@ -26,6 +26,11 @@ Bajo Licencia MIT
 //Incluir la biblioteca WiFi
 #include <ESP8266WiFi.h>
 #include "configuracion.h"
+#include  <DHT.h>
+int sensor = D4;
+float temperatura;
+float humedad;
+DHT dht (sensor,DHT22);
 
 const char tipoNubosidad[5]={'C','M','N','P','D'};
   /* D - despejado
@@ -111,6 +116,7 @@ static void envioDatos () {
 
 void setup () {
   Serial.begin(9600);
+  dht.begin();
   Serial.println("\n Iniciando ejemplo de Envio");
 
 //verificación del modulo WiFi y la conexión a internet
@@ -127,6 +133,12 @@ void setup () {
 }
 
 void loop () {
+  temperatura = dht.readTemperature();
+  humedad = dht.readHumidity();
+  Serial.println("temperatura: ");
+  Serial.print(temperatura);
+  Serial.println(" humedad: ");
+  Serial.print(humedad);
   envioDatos();
 
 //Recibe respuesta del servidor
@@ -140,6 +152,8 @@ void loop () {
  * Funcion que imprime status de WiFi, 
  * nombre de red, local IP e intensidad de señal
 */
+
+
 void printWifiStatus()
 {
   // print the SSID of the network you're attached to
