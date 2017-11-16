@@ -32,12 +32,13 @@ float temperatura;
 float humedad;
 DHT dht (sensor,DHT22);
 
-const char tipoNubosidad[5]={'C','M','N','P','D'};
+const char tipoNubosidad[6]={'C','M','N','P','D','O'};
   /* D - despejado
    * P - poco nuboso
    * N - nuboso
    * M - muy nuboso
    * C - cubierto
+   * O - 
    */
 
 //Formamos el header para enviar a la pagina
@@ -52,7 +53,7 @@ WiFiClient client;
 
 char nubosidad() {
   int lecturaSensor=analogRead(A0);
-  char nubosidad = tipoNubosidad[map(lecturaSensor, 300, 1023, 0, 5)];
+  char nubosidad = tipoNubosidad[map(lecturaSensor, 0, 1023, 0, 6)];
   Serial.print("Nubosidad: ");
   Serial.println(nubosidad);
   return nubosidad;
@@ -73,7 +74,7 @@ static void envioDatos () {
          /*clouds, humidity, pressure, rain, temp, uv, windDirection, windSpeed*/
   String params1, params2,params3,params4,params5,params6,params7,params8;
   
-  params1 = "D";
+  params1 = String(nubosidad());
   params2 = String(humedad);
   params3 = String(random(0,150));
   params4 = String(random(0,250));
