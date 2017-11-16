@@ -54,8 +54,8 @@ WiFiClient client;
 char nubosidad() {
   int lecturaSensor=analogRead(A0);
   char nubosidad = tipoNubosidad[map(lecturaSensor, 0, 1023, 0, 6)];
-  Serial.print("Nubosidad: ");
-  Serial.println(nubosidad);
+  Serial.print("Nubosidad: "); 
+  Serial.println(nubosidad); 
   return nubosidad;
 }
 
@@ -136,17 +136,21 @@ void setup () {
 void loop () {
   temperatura = dht.readTemperature();
   humedad = dht.readHumidity();
-  Serial.println("temperatura: ");
-  Serial.print(temperatura);
-  Serial.println(" humedad: ");
-  Serial.print(humedad);
+ 
   envioDatos();
 
 //Recibe respuesta del servidor
   while (client.available()) {
    char c = client.read();
    Serial.write(c);
-  }
+}
+    Serial.println("");
+   //Mostrar variables
+   Serial.print("temperatura: ");
+   Serial.println(temperatura);
+   Serial.print(" humedad: ");
+   Serial.println(humedad);
+   delay(100);
 }
 
 /*
