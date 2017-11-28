@@ -44,6 +44,15 @@ sensors_event_t event;
 int sensor = D4;
 float temperatura;
 float humedad;
+
+/*Variables Anemometro*/
+const int pinAnemometro = D3;
+unsigned long tiempoAntes;
+unsigned long  tiempo=0;
+unsigned long sumaTiempo=0;
+byte contador=0;
+bool bandera=0;
+
 DHT dht (sensor,DHT22);
 
 const char tipoNubosidad[6]={'C','M','N','P','D','O'};
@@ -180,6 +189,8 @@ void setup () {
   
   Serial.println("Iniciando Estacion Meteorito");
   Serial.println("por Electronic Cats");
+
+  pinMode(pinAnemometro, INPUT);
   
   uv.begin(VEML6070_1_T);  // pass in the integration time constant
   dht.begin();
@@ -203,6 +214,9 @@ void setup () {
   Serial.println("Tu estas conectado a la red WiFi");
   
   printWifiStatus();
+
+  attachInterrupt(digitalPinToInterrupt(pinAnemometro), interrupcionViento,RISING );
+  tiempoAntes=millis();
 }
 
 void loop () {
@@ -252,4 +266,25 @@ void printWifiStatus()
   Serial.print("Signal strength (RSSI):");
   Serial.print(rssi);
   Serial.println(" dBm");
+}
+
+void interrupcionViento() {
+  if( millis()>(50+tiempoAntes)){
+    bandera=!bandera;
+    if(bandera==0){
+      tiempo=(millis()-tiempoAntes);
+      tiempoAntes=millis();
+      sumaTiempo+=tiempo; 
+      if(contador<=19){
+        contador++;
+        Serial.println(contador);
+      }else{
+        contador=0;
+        float velocidad=(2*3.1416*0.05*3.6)/((sumaTiempo/1000.0)/20);
+        Serial.print(velocidad);
+        Serial.println("  Km/h");
+        sumaTiempo=0;
+      }
+    }
+  }
 }
