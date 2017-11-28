@@ -12,7 +12,10 @@ http://redmet.org
 Entorno de Desarrollo Especifico:
   IDE: Arduino 1.8.4
   Plataforma de Hardware:
-  ESP8266 WEMOS D1 Mini
+    - ESP8266 WEMOS D1 Mini
+    - DHT22
+    - VEML6070
+    - Fotoresistencia
   or Tarjeta de desarrollo Meteorito por Electronic Cats
 
 Este código es beerware; si me ves 
@@ -27,6 +30,11 @@ Bajo Licencia MIT
 #include <ESP8266WiFi.h>
 #include "configuracion.h"
 #include  <DHT.h>
+#include <Wire.h>
+#include "Adafruit_VEML6070.h"
+
+Adafruit_VEML6070 uv = Adafruit_VEML6070();
+
 int sensor = D4;
 float temperatura;
 float humedad;
@@ -79,7 +87,7 @@ static void envioDatos () {
   params3 = String(random(0,150));
   params4 = String(random(0,250));
   params5 = String(temperatura);
-  params6 = String(random(0,15));
+  params6 = String(uv.readUV());
   params7 = String(random(0,10));
   params8 = String(random(0,360));
 
@@ -117,7 +125,9 @@ static void envioDatos () {
 
 void setup () {
   Serial.begin(9600);
+  uv.begin(VEML6070_1_T);  // pass in the integration time constant
   dht.begin();
+  
   Serial.println("\n Iniciando ejemplo de Envio");
 
 //verificación del modulo WiFi y la conexión a internet
@@ -150,6 +160,8 @@ void loop () {
    Serial.println(temperatura);
    Serial.print(" humedad: ");
    Serial.println(humedad);
+   Serial.print("UV nivel luz: "); 
+   Serial.println(uv.readUV());
    delay(100);
 }
 
@@ -157,8 +169,6 @@ void loop () {
  * Funcion que imprime status de WiFi, 
  * nombre de red, local IP e intensidad de señal
 */
-
-
 void printWifiStatus()
 {
   // print the SSID of the network you're attached to
