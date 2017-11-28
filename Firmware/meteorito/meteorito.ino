@@ -176,6 +176,10 @@ static void envioDatos () {
 
 void setup () {
   Serial.begin(9600);
+  
+  Serial.println("Iniciando Estacion Meteorito");
+  Serial.println("por Electronic Cats");
+  
   uv.begin(VEML6070_1_T);  // pass in the integration time constant
   dht.begin();
 
@@ -186,8 +190,6 @@ void setup () {
     Serial.print("Ooops, no detectado BMP085 ... Checar tu cableado o I2C Direccion!");
     while(1);
   }
-  
-  Serial.println("\n Iniciando ejemplo de Envio");
 
 //verificación del modulo WiFi y la conexión a internet
   WiFi.begin(ssid, password);
