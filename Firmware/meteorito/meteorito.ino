@@ -16,7 +16,8 @@ Entorno de Desarrollo Especifico:
     - DHT22
     - VEML6070
     - Fotoresistencia
-  or Tarjeta de desarrollo Meteorito por Electronic Cats
+    - BMP180
+  o Tarjeta de desarrollo Meteorito por Electronic Cats
 
 Este código es beerware; si me ves 
 (o cualquier otro miembreo de The Inventors House) 
@@ -73,7 +74,7 @@ char nubosidad() {
 }
 
 void presion(){
-  /* Display the results (barometric pressure is measure in hPa) */
+  /* Muestra los resultados (la presión barométrica se mide en hPa) */
   if (event.pressure)
   {
     /* Display atmospheric pressue in hPa */
@@ -163,15 +164,15 @@ static void envioDatos () {
   client.println();
   client.println(dato);
 
-  // available() will return the number of characters
-  // currently in the receive buffer.
+  // available() devolverá el número de caracteres
+  // actualmente en el búfer de recepción.
   while (client.available())
-    Serial.write(client.read()); // read() gets the FIFO char
+    Serial.write(client.read()); // read() obtiene el carácter de FIFO
 
-  // connected() is a boolean return value - 1 if the
-  // connection is active, 0 if it's closed.
+  // connected () es un valor de retorno booleano - 1 si
+  // la conexión está activa, 0 si está cerrada.
   if (client.connected())
-    client.stop(); // stop() closes a TCP connection.
+    client.stop(); // stop() cierra una conexión TCP.
 }
 
 void setup () {
@@ -237,16 +238,16 @@ void loop () {
 */
 void printWifiStatus()
 {
-  // print the SSID of the network you're attached to
+  // imprime el SSID de la red a la que está conectado
   Serial.print("SSID: ");
   Serial.println(WiFi.SSID());
 
-  // print your WiFi shield's IP address
+  // imprime la dirección IP de tu estacion WiFi
   IPAddress ip = WiFi.localIP();
   Serial.print("IP Address: ");
   Serial.println(ip);
 
-  // print the received signal strength
+  // imprime la intensidad de la señal recibida
   long rssi = WiFi.RSSI();
   Serial.print("Signal strength (RSSI):");
   Serial.print(rssi);
