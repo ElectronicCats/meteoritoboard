@@ -80,28 +80,28 @@ static void envioDatos () {
 
   //Asignar parametros a enviar:
          /*clouds, humidity, pressure, rain, temp, uv, windDirection, windSpeed*/
-  String params1, params2,params3,params4,params5,params6,params7,params8;
+  String clouds, humidity, pressure, rain, temp, ultrav, windDirection, windSpeed;
   
-  params1 = String(nubosidad());
-  params2 = String(humedad);
-  params3 = String(random(0,150));
-  params4 = String(random(0,250));
-  params5 = String(temperatura);
-  params6 = String(uv.readUV());
-  params7 = String(random(0,10));
-  params8 = String(random(0,360));
+  clouds = String(nubosidad());
+  humidity = String(humedad);
+  pressure = String(random(0,150));
+  rain = String(random(0,250));
+  temp = String(temperatura);
+  ultrav = String(uv.readUV());
+  windDirection = String(random(0,10));
+  windSpeed = String(random(0,360));
 
 //cargamos una cadena con los datos
   /*El formato es "{\"data\":{\"metrica\":valor}}"*/
   
-  //Ejemplo con un solo valor
+  //Ejemplo con un solo valor constante
   //String dato="{\"data\":{\"temp\":15}}";
 
-  //Ejemplo con todos los valores posibles
+  //Ejemplo con todos los valores posibles constantes
   //String dato="{\"data\":{\"clouds\":\"D\",\"humidity\":95,\"pressure\":145,\"rain\":245,\"temp\":15,\"uv\":13,\"windDirection\":9,\"windSpeed\":340}}";
   
   //Lectura de todos los valores posibles
-  String dato="{\"data\":{\"clouds\":\""+params1+"\",\"humidity\":\""+params2+"\",\"pressure\":\""+params3+"\",\"rain\":\""+params4+"\",\"temp\":\""+params5+"\",\"uv\":\""+params6+"\",\"windDirection\":\""+params7+"\",\"windSpeed\":\""+params8+"\"}}";
+  String dato="{\"data\":{\"clouds\":\""+clouds+"\",\"humidity\":\""+humidity+"\",\"pressure\":\""+pressure+"\",\"rain\":\""+rain+"\",\"temp\":\""+temp+"\",\"uv\":\""+ultrav+"\",\"windDirection\":\""+windDirection+"\",\"windSpeed\":\""+windSpeed+"\"}}";
   
   Serial.println(F("Enviando datos!"));
   //Serial.println(dato.length());
