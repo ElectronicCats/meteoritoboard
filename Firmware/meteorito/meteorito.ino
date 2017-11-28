@@ -28,7 +28,8 @@ Distribuido tal cual; no se otorga ninguna garantía.
 Bajo Licencia MIT
 ************************************************************/
 //Incluir la biblioteca WiFi
-#include <ESP8266WiFi.h>
+//#include <ESP8266WiFi.h>
+#include <WiFi.h>
 #include "configuracion.h"
 #include  <DHT.h>
 #include <Wire.h>
@@ -41,12 +42,12 @@ Adafruit_BMP085_Unified bmp = Adafruit_BMP085_Unified(10085);
 
 sensors_event_t event;
 
-int sensor = D4;
+int sensor = 4;
 float temperatura;
 float humedad;
 
 /*Variables Anemometro*/
-const int pinAnemometro = D3;
+const int pinAnemometro = 3;
 unsigned long tiempoAntes;
 unsigned long  tiempo=0;
 unsigned long sumaTiempo=0;
