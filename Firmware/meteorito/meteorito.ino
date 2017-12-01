@@ -6,13 +6,13 @@ Andres Sabas @ The Inventor's House
 Fecha Original de Creación: 28 de Octubre del 2017
 
 Este ejemplo demuestra la conexion y envio de datos 
-con un modulo ESP8266 a la plataforma 
+con un modulo ESP32 a la plataforma 
 http://redmet.org
 
 Entorno de Desarrollo Especifico:
   IDE: Arduino 1.8.4
   Plataforma de Hardware:
-    - ESP8266 WEMOS D1 Mini
+    - ESP32 WEMOS D1 Mini
     - DHT22
     - VEML6070
     - Fotoresistencia
@@ -28,16 +28,13 @@ Distribuido tal cual; no se otorga ninguna garantía.
 Bajo Licencia MIT
 ************************************************************/
 //Incluir la biblioteca WiFi
-//#include <ESP8266WiFi.h>
 #include <WiFi.h>
 #include "configuracion.h"
 #include  <DHT.h>
 #include <Wire.h>
-#include "Adafruit_VEML6070.h"
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BMP085_U.h>
 
-Adafruit_VEML6070 uv = Adafruit_VEML6070();
 Adafruit_BMP085_Unified bmp = Adafruit_BMP085_Unified(10085);
 
 sensors_event_t event;
@@ -53,6 +50,9 @@ unsigned long  tiempo=0;
 unsigned long sumaTiempo=0;
 byte contador=0;
 bool bandera=0;
+
+const byte pinRayosUV = 12;         //pin Analogico
+const byte pinNubosidad = A0;
 
 DHT dht (sensor,DHT22);
 
@@ -74,9 +74,13 @@ String httpHeader = "POST /api/device/metrics HTTP/1.1\r\n"
 //Inicializar el WiFi cliente objeto
 WiFiClient client;
 
+int leerUV(){
+  int uv =map(analogRead(pinRayosUV),50,480,0,11);
+  return uv
+}
 
 char nubosidad() {
-  int lecturaSensor=analogRead(A0);
+  int lecturaSensor=analogRead(pinNubosidad);
   char nubosidad = tipoNubosidad[map(lecturaSensor, 0, 1023, 0, 6)];
   Serial.print("Nubosidad: "); 
   Serial.println(nubosidad); 
@@ -142,14 +146,14 @@ static void envioDatos () {
 
   //Asignar parametros a enviar:
          /*clouds, humidity, pressure, rain, temp, uv, windDirection, windSpeed*/
-  String clouds, humidity, pressure, rain, temp, ultrav, windDirection, windSpeed;
+  String clouds, humidity, pressure, rain, temp, indiceUV, windDirection, windSpeed;
   
   clouds = String(nubosidad());
   humidity = String(humedad);
   pressure = String(event.pressure);
   rain = String(random(0,250));
   temp = String(temperatura);
-  ultrav = String(uv.readUV());
+  indiceUV = String(leerUV());
   windDirection = String(random(0,10));
   windSpeed = String(random(0,360));
 
@@ -163,7 +167,7 @@ static void envioDatos () {
   //String dato="{\"data\":{\"clouds\":\"D\",\"humidity\":95,\"pressure\":145,\"rain\":245,\"temp\":15,\"uv\":13,\"windDirection\":9,\"windSpeed\":340}}";
   
   //Lectura de todos los valores posibles
-  String dato="{\"data\":{\"clouds\":\""+clouds+"\",\"humidity\":\""+humidity+"\",\"pressure\":\""+pressure+"\",\"rain\":\""+rain+"\",\"temp\":\""+temp+"\",\"uv\":\""+ultrav+"\",\"windDirection\":\""+windDirection+"\",\"windSpeed\":\""+windSpeed+"\"}}";
+  String dato="{\"data\":{\"clouds\":\""+clouds+"\",\"humidity\":\""+humidity+"\",\"pressure\":\""+pressure+"\",\"rain\":\""+rain+"\",\"temp\":\""+temp+"\",\"uv\":\""+indiceUV+"\",\"windDirection\":\""+windDirection+"\",\"windSpeed\":\""+windSpeed+"\"}}";
   
   Serial.println(F("Enviando datos!"));
   //Serial.println(dato.length());
@@ -192,8 +196,7 @@ void setup () {
   Serial.println("por Electronic Cats");
 
   pinMode(pinAnemometro, INPUT);
-  
-  uv.begin(VEML6070_1_T);  // pass in the integration time constant
+ 
   dht.begin();
 
   /* Initializar el sensor BMP180 */
@@ -243,7 +246,7 @@ void loop () {
    Serial.print(" humedad: ");
    Serial.println(humedad);
    Serial.print("UV nivel luz: "); 
-   Serial.println(uv.readUV());
+   Serial.println(leerUV());
    delay(100);
 }
 
