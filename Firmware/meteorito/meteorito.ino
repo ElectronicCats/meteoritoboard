@@ -61,6 +61,17 @@ const byte pinNubosidad = A0;
 int sumaVeleta=0;      
 const byte pinDireccion = 14;       //pin Analógico 
 int direccion = 0;
+const int tiempoEnvio=180;
+
+//variables manejo de proceso precipitacion
+float precipitacion = 0;
+const byte pinPluviometro = 13;  //pin digital
+unsigned long tiempoAntesDos;
+unsigned long  tiempoDos=0;
+unsigned long sumaTiempoDos=0;
+byte contadorDos=0;
+const int capacidadTotal=10;   //capacidad combinada de ambos lados en mL
+
 
 DHT dht (sensor,DHT22);
 
@@ -81,8 +92,8 @@ String httpHeader = "POST /api/device/metrics HTTP/1.1\r\n"
 
 //Inicializar el WiFi cliente objeto
 WiFiClient client;
-
-int leerDireccion(int suma){
+/*
+int leerDireccion(){
   suma=suma/tiempoEnvio;
   if(suma>=415 && suma< 440) return 0;
   if(suma>=440 && suma< 490) return 45;
@@ -93,10 +104,10 @@ int leerDireccion(int suma){
   if(suma>=590 && suma< 615) return 270;
   if(suma>=615 && suma< 620) return 315;
 }
-
+*/
 int leerUV(){
   int uv =map(analogRead(pinRayosUV),50,480,0,11);
-  return uv
+  return uv;
 }
 
 char nubosidad() {
@@ -174,7 +185,7 @@ static void envioDatos () {
   rain = String(random(0,250));
   temp = String(temperatura);
   indiceUV = String(leerUV());
-  windDirection = String(leerDireccion());
+//  windDirection = String(leerDireccion());
   windSpeed = String(random(0,360));
 
 //cargamos una cadena con los datos
@@ -214,8 +225,6 @@ void setup () {
   
   Serial.println("Iniciando Estacion Meteorito");
   Serial.println("por Electronic Cats");
-
-  pinMode(pinAnemometro, INPUT);
  
   dht.begin();
 
@@ -239,8 +248,15 @@ void setup () {
   
   printWifiStatus();
 
+  //Iniciamos anemometro
+  pinMode(pinAnemometro, INPUT);
   attachInterrupt(digitalPinToInterrupt(pinAnemometro), interrupcionViento,RISING );
   tiempoAntes=millis();
+
+  //Iniciamos pluviometro
+   pinMode(pinPluviometro, INPUT);
+   attachInterrupt(digitalPinToInterrupt(pinPluviometro), interrupcionPrecipitacion,RISING );
+   tiempoAntesDos=millis();
 }
 
 void loop () {
@@ -268,7 +284,7 @@ void loop () {
    Serial.print("UV nivel luz: "); 
    Serial.println(leerUV());
    Serial.print("Direccion del viento: "); 
-   Serial.println(leerDireccion());
+//   Serial.println(leerDireccion());
    delay(100);
 }
 
@@ -312,5 +328,21 @@ void interrupcionViento() {
         sumaTiempo=0;
       }
     }
+  }
+}
+
+//interrupcion para precipitación
+void interrupcionPrecipitacion() {
+  if( millis()>(50+tiempoAntesDos)){
+      tiempoDos=(millis()-tiempoAntesDos);
+      tiempoAntesDos=millis();
+      sumaTiempoDos+=tiempoDos; 
+      if(contadorDos<=19){
+        contadorDos++;
+      }else{
+        precipitacion=contadorDos*(((capacidadTotal*10)/(42.84))/(sumaTiempoDos/1000.0));
+        contadorDos=0;
+        sumaTiempoDos=0;
+      }
   }
 }
