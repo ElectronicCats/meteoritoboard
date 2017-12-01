@@ -51,8 +51,16 @@ unsigned long sumaTiempo=0;
 byte contador=0;
 bool bandera=0;
 
+/*Variables uv*/
 const byte pinRayosUV = 12;         //pin Analogico
+
+/*Variables Nubosidad*/
 const byte pinNubosidad = A0;
+
+/*Variables Direccion de Viento*/
+int sumaVeleta=0;      
+const byte pinDireccion = 14;       //pin Analógico 
+int direccion = 0;
 
 DHT dht (sensor,DHT22);
 
@@ -73,6 +81,18 @@ String httpHeader = "POST /api/device/metrics HTTP/1.1\r\n"
 
 //Inicializar el WiFi cliente objeto
 WiFiClient client;
+
+int leerDireccion(int suma){
+  suma=suma/tiempoEnvio;
+  if(suma>=415 && suma< 440) return 0;
+  if(suma>=440 && suma< 490) return 45;
+  if(suma>=490 && suma< 510) return 90;
+  if(suma>=540 && suma< 550) return 135;
+  if(suma>=510 && suma< 525) return 18;
+  if(suma>=525 && suma< 540) return 225;
+  if(suma>=590 && suma< 615) return 270;
+  if(suma>=615 && suma< 620) return 315;
+}
 
 int leerUV(){
   int uv =map(analogRead(pinRayosUV),50,480,0,11);
@@ -154,7 +174,7 @@ static void envioDatos () {
   rain = String(random(0,250));
   temp = String(temperatura);
   indiceUV = String(leerUV());
-  windDirection = String(random(0,10));
+  windDirection = String(leerDireccion());
   windSpeed = String(random(0,360));
 
 //cargamos una cadena con los datos
@@ -247,6 +267,8 @@ void loop () {
    Serial.println(humedad);
    Serial.print("UV nivel luz: "); 
    Serial.println(leerUV());
+   Serial.print("Direccion del viento: "); 
+   Serial.println(leerDireccion());
    delay(100);
 }
 
