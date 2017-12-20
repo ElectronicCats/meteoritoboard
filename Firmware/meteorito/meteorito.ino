@@ -92,7 +92,8 @@ String httpHeader = "POST /api/device/metrics HTTP/1.1\r\n"
 
 //Inicializar el WiFi cliente objeto
 WiFiClient client;
-/*
+
+/*Funcion para obtener direccion del viento */
 int leerDireccion(){
   suma=suma/tiempoEnvio;
   if(suma>=415 && suma< 440) return 0;
@@ -104,12 +105,14 @@ int leerDireccion(){
   if(suma>=590 && suma< 615) return 270;
   if(suma>=615 && suma< 620) return 315;
 }
-*/
+
+/*Funcion para obtener la luz ultravioleta*/
 int leerUV(){
   int uv =map(analogRead(pinRayosUV),50,480,0,11);
   return uv;
 }
 
+/*Funcion para obtener nubosidad*/
 char nubosidad() {
   int lecturaSensor=analogRead(pinNubosidad);
   char nubosidad = tipoNubosidad[map(lecturaSensor, 0, 1023, 0, 6)];
@@ -118,6 +121,7 @@ char nubosidad() {
   return nubosidad;
 }
 
+/*Funcion para obtener presion y altura*/
 void presion(){
   /* Muestra los resultados (la presión barométrica se mide en hPa) */
   if (event.pressure)
@@ -185,7 +189,7 @@ static void envioDatos () {
   rain = String(random(0,250));
   temp = String(temperatura);
   indiceUV = String(leerUV());
-//  windDirection = String(leerDireccion());
+  windDirection = String(leerDireccion());
   windSpeed = String(random(0,360));
 
 //cargamos una cadena con los datos
@@ -284,7 +288,7 @@ void loop () {
    Serial.print("UV nivel luz: "); 
    Serial.println(leerUV());
    Serial.print("Direccion del viento: "); 
-//   Serial.println(leerDireccion());
+   Serial.println(leerDireccion());
    delay(100);
 }
 
