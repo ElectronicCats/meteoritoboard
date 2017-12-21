@@ -39,12 +39,12 @@ Adafruit_BMP085_Unified bmp = Adafruit_BMP085_Unified(10085);
 
 sensors_event_t event;
 
-int sensor = 4;
+int sensor = 16;
 float temperatura;
 float humedad;
 
 /*Variables Anemometro*/
-const int pinAnemometro = 3;
+const int pinAnemometro = 27;
 unsigned long tiempoAntes;
 unsigned long  tiempo=0;
 unsigned long sumaTiempo=0;
