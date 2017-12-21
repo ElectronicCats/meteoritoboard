@@ -94,6 +94,7 @@ String httpHeader = "POST /api/device/metrics HTTP/1.1\r\n"
 WiFiClient client;
 
 /*Funcion para obtener direccion del viento */
+/*
 int leerDireccion(){
   suma=suma/tiempoEnvio;
   if(suma>=415 && suma< 440) return 0;
@@ -105,7 +106,7 @@ int leerDireccion(){
   if(suma>=590 && suma< 615) return 270;
   if(suma>=615 && suma< 620) return 315;
 }
-
+*/
 /*Funcion para obtener la luz ultravioleta*/
 int leerUV(){
   int uv =map(analogRead(pinRayosUV),50,480,0,11);
@@ -189,7 +190,7 @@ static void envioDatos () {
   rain = String(random(0,250));
   temp = String(temperatura);
   indiceUV = String(leerUV());
-  windDirection = String(leerDireccion());
+  windDirection = String(random(0,360));
   windSpeed = String(random(0,360));
 
 //cargamos una cadena con los datos
@@ -205,7 +206,7 @@ static void envioDatos () {
   String dato="{\"data\":{\"clouds\":\""+clouds+"\",\"humidity\":\""+humidity+"\",\"pressure\":\""+pressure+"\",\"rain\":\""+rain+"\",\"temp\":\""+temp+"\",\"uv\":\""+indiceUV+"\",\"windDirection\":\""+windDirection+"\",\"windSpeed\":\""+windSpeed+"\"}}";
   
   Serial.println(F("Enviando datos!"));
-  //Serial.println(dato.length());
+  Serial.println(dato);
 
   client.print(httpHeader);
   client.print("Content-Length: "); 
@@ -213,6 +214,22 @@ static void envioDatos () {
   client.println();
   client.println(dato);
 
+  unsigned long timeout = millis();
+    while (client.available() == 0) {
+        if (millis() - timeout > 5000) {
+            Serial.println(">>> Client Timeout !");
+            client.stop();
+            return;
+        }
+    }
+
+    // Read all the lines of the reply from server and print them to Serial
+    while(client.available()) {
+        String line = client.readStringUntil('\r');
+        Serial.print(line);
+    }
+
+/*
   // available() devolverá el número de caracteres
   // actualmente en el búfer de recepción.
   while (client.available())
@@ -222,6 +239,7 @@ static void envioDatos () {
   // la conexión está activa, 0 si está cerrada.
   if (client.connected())
     client.stop(); // stop() cierra una conexión TCP.
+    */
 }
 
 void setup () {
@@ -254,12 +272,12 @@ void setup () {
 
   //Iniciamos anemometro
   pinMode(pinAnemometro, INPUT);
-  attachInterrupt(digitalPinToInterrupt(pinAnemometro), interrupcionViento,RISING );
+  //attachInterrupt(digitalPinToInterrupt(pinAnemometro), interrupcionViento,RISING );
   tiempoAntes=millis();
 
   //Iniciamos pluviometro
    pinMode(pinPluviometro, INPUT);
-   attachInterrupt(digitalPinToInterrupt(pinPluviometro), interrupcionPrecipitacion,RISING );
+   //attachInterrupt(digitalPinToInterrupt(pinPluviometro), interrupcionPrecipitacion,RISING );
    tiempoAntesDos=millis();
 }
 
@@ -274,11 +292,6 @@ void loop () {
   
   envioDatos();
 
-//Recibe respuesta del servidor
-  while (client.available()) {
-   char c = client.read();
-   Serial.write(c);
-}
     Serial.println("");
    //Mostrar variables
    Serial.print("temperatura: ");
@@ -288,8 +301,8 @@ void loop () {
    Serial.print("UV nivel luz: "); 
    Serial.println(leerUV());
    Serial.print("Direccion del viento: "); 
-   Serial.println(leerDireccion());
-   delay(100);
+//   Serial.println(leerDireccion());
+   delay(500);
 }
 
 /*
