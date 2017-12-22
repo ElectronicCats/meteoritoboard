@@ -109,7 +109,7 @@ int leerDireccion(){
 */
 /*Funcion para obtener la luz ultravioleta*/
 int leerUV(){
-  int uv =map(analogRead(pinRayosUV),50,480,0,11);
+  int uv =map(analogRead(pinRayosUV),0,4095,0,15);
   return uv;
 }
 
@@ -129,7 +129,7 @@ void presion(){
   {
     /* Display atmospheric pressue in hPa */
     Serial.print("Presion:    ");
-    Serial.print(event.pressure);
+    Serial.print(event.pressure*0.1);
     Serial.println(" hPa");
     
     /* Calculating altitude with reasonable accuracy requires pressure    *
@@ -186,7 +186,7 @@ static void envioDatos () {
   
   clouds = String(nubosidad());
   humidity = String(humedad);
-  pressure = String(event.pressure);
+  pressure = String(event.pressure*0.1);
   rain = String(random(0,250));
   temp = String(temperatura);
   indiceUV = String(leerUV());
