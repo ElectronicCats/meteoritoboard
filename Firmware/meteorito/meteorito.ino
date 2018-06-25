@@ -9,7 +9,7 @@ Este ejemplo demuestra la conexion y envio de datos
 con un modulo ESP32 a la plataforma 
 http://redmet.org
 
-Entorno de Desarrollo Especifico:
+Entorno de Desarrollo Especifico:  
   IDE: Arduino 1.8.4
   Plataforma de Hardware:
     - ESP32 WEMOS D1 Mini
@@ -39,12 +39,12 @@ Adafruit_BMP085_Unified bmp = Adafruit_BMP085_Unified(10085);
 
 sensors_event_t event;
 
-int sensor = 16;
+int dhtpin = 23;
 float temperatura;
 float humedad;
 
 /*Variables Anemometro*/
-const int pinAnemometro = 27;
+const int pinAnemometro = 27¡2;
 unsigned long tiempoAntes;
 unsigned long  tiempo=0;
 unsigned long sumaTiempo=0;
@@ -73,7 +73,7 @@ byte contadorDos=0;
 const int capacidadTotal=10;   //capacidad combinada de ambos lados en mL
 
 
-DHT dht (sensor,DHT22);
+DHT dht (dhtpin,DHT22);
 
 const char tipoNubosidad[6]={'C','M','N','P','D','O'};
   /* D - despejado
