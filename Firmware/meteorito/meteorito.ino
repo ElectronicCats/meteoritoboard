@@ -44,7 +44,7 @@ float temperatura;
 float humedad;
 
 /*Variables Anemometro*/
-const int pinAnemometro = 27¡2;
+const int pinAnemometro = 14;
 unsigned long tiempoAntes;
 unsigned long  tiempo=0;
 unsigned long sumaTiempo=0;
@@ -55,7 +55,7 @@ bool bandera=0;
 const byte pinRayosUV = 12;         //pin Analogico
 
 /*Variables Nubosidad*/
-const byte pinNubosidad = A0;
+const byte pinNubosidad = 13;
 
 /*Variables Direccion de Viento*/
 int sumaVeleta=0;      
@@ -75,13 +75,13 @@ const int capacidadTotal=10;   //capacidad combinada de ambos lados en mL
 
 DHT dht (dhtpin,DHT22);
 
-const char tipoNubosidad[6]={'C','M','N','P','D','O'};
+const char tipoNubosidad[5]={'C','M','N','P','D'};
   /* D - despejado
    * P - poco nuboso
    * N - nuboso
    * M - muy nuboso
    * C - cubierto
-   * O - 
+   * O - opcional
    */
 
 //Formamos el header para enviar a la pagina
@@ -116,7 +116,7 @@ int leerUV(){
 /*Funcion para obtener nubosidad*/
 char nubosidad() {
   int lecturaSensor=analogRead(pinNubosidad);
-  char nubosidad = tipoNubosidad[map(lecturaSensor, 0, 1023, 0, 6)];
+  char nubosidad = tipoNubosidad[map(lecturaSensor, 0, 4096, 0, 5)];
   Serial.print("Nubosidad: "); 
   Serial.println(nubosidad); 
   return nubosidad;
