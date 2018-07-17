@@ -377,13 +377,39 @@ void setup () {
 void loop () {
   temperatura = dht.readTemperature();
   humedad = dht.readHumidity();
-   
+     
   /* Obtener una nueva lectura del sensor BMP180 */ 
   bmp.getEvent(&event);
   
   presion();
-  
+  #ifdef WIFI
   envioDatos();
+#endif
+  //Enviar datos por BLE
+  char TempS[10];
+  dtostrf(temperatura, 2, 2, TempS);
+  TemperaturaDescriptor.setValue(TempS);
+  
+  
+  char HumS[8];
+  dtostrf(humedad, 2, 2, HumS);
+  HumedadDescriptor.setValue(HumS);
+
+
+  char UvS[8];
+  dtostrf(leerUV(), 2, 2, UvS);
+  UvDescriptor.setValue(UvS);
+  
+  
+  char PresS[8];
+  dtostrf(event.pressure*0.1, 2, 2, PresS);
+  PresionDescriptor.setValue(PresS);
+
+
+  //NubosidadDescriptor.setValue(nubosidad());
+ 
+
+  
 
     Serial.println("");
    //Mostrar variables
