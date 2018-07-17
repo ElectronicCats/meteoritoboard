@@ -87,6 +87,85 @@ const int capacidadTotal=10;   //capacidad combinada de ambos lados en mL
 
 DHT dht (dhtpin,DHT22);
 
+bool _BLEClientConnected = false;
+
+#define MeteoritoService BLEUUID((uint16_t)0x181A)
+BLECharacteristic TemperaturaCharacteristics(BLEUUID((uint16_t)0x2A6E), BLECharacteristic::PROPERTY_NOTIFY);
+BLECharacteristic HumedadCharacteristics(BLEUUID((uint16_t)0x2A6F), BLECharacteristic::PROPERTY_NOTIFY);
+BLECharacteristic PresionCharacteristics(BLEUUID((uint16_t)0x2A6D), BLECharacteristic::PROPERTY_NOTIFY);
+BLECharacteristic UvCharacteristics(BLEUUID((uint16_t)0x2A76), BLECharacteristic::PROPERTY_NOTIFY);
+//BLECharacteristic DireccionVientoCharacteristics(BLEUUID((uint16_t)0x2A73), BLECharacteristic::PROPERTY_NOTIFY);
+//BLECharacteristic NubosidadCharacteristics(BLEUUID((uint16_t)0x2A58), BLECharacteristic::PROPERTY_NOTIFY);
+//BLECharacteristic VelocidadVientoCharacteristics(BLEUUID((uint16_t) 0x2A72), BLECharacteristic::PROPERTY_NOTIFY);
+//BLECharacteristic PrecipitacionCharacteristics(BLEUUID((uint16_t) 0x2A78), BLECharacteristic::PROPERTY_NOTIFY);
+//BLECharacteristic AltitudCharacteristics(BLEUUID((uint16_t) 0x2A6C), BLECharacteristic::PROPERTY_NOTIFY);
+
+BLEDescriptor TemperaturaDescriptor(BLEUUID((uint16_t)0x290C));
+BLEDescriptor HumedadDescriptor(BLEUUID((uint16_t)0x290C));
+BLEDescriptor PresionDescriptor(BLEUUID((uint16_t)0x290C));
+BLEDescriptor UvDescriptor(BLEUUID((uint16_t)0x290C));
+//BLEDescriptor DireccionVientoDescriptor(BLEUUID((uint16_t)0x290C));
+//BLEDescriptor NubosidadDescriptor(BLEUUID((uint16_t)0x290C));
+//BLEDescriptor VelocidadVientoDescriptor(BLEUUID((uint16_t)0x290C));
+//BLEDescriptor PrecipitacionDescriptor(BLEUUID((uint16_t)0x290C));
+//BLEDescriptor AltitudDescriptor(BLEUUID((uint16_t)0x290C));
+
+class MyServerCallbacks : public BLEServerCallbacks {
+    void onConnect(BLEServer* pServer) {
+      _BLEClientConnected = true;
+    };
+
+    void onDisconnect(BLEServer* pServer) {
+      _BLEClientConnected = false;
+    }
+};
+
+void InitBLE() {
+  BLEDevice::init("Estación metereológica");
+  // Create the BLE Server
+  BLEServer *pServer = BLEDevice::createServer();
+  pServer->setCallbacks(new MyServerCallbacks());
+
+  // Create the BLE Service
+  BLEService *pMeteorito = pServer->createService(MeteoritoService);
+//Caracteristica Temperatura
+  pMeteorito->addCharacteristic(&TemperaturaCharacteristics);
+  //TemperaturaDescriptor.setValue("Position 0 - 6");
+  TemperaturaCharacteristics.addDescriptor(&TemperaturaDescriptor);
+//Caracteristica Humedad
+  pMeteorito->addCharacteristic(&HumedadCharacteristics);
+  HumedadCharacteristics.addDescriptor(&HumedadDescriptor);
+//Caracteristica Presión
+ pMeteorito->addCharacteristic(&PresionCharacteristics);
+  PresionCharacteristics.addDescriptor(&PresionDescriptor);
+//Caracteristica Uv
+ pMeteorito->addCharacteristic(&UvCharacteristics);
+  UvCharacteristics.addDescriptor(&UvDescriptor);
+ //Caracteristica Nubosidad
+ //pMeteorito->addCharacteristic(&NubosidadCharacteristics);
+  //NubosidadCharacteristics.addDescriptor(&NubosidadDescriptor);
+//Caracteristica Dirección del viento
+ //pHeart->addCharacteristic(&DireccionVientoCharacteristics);
+  //DireccionVientoDescriptor.setValue("Position 0 - 6");
+  //DireccionVientoCharacteristics.addDescriptor(&DireccionVientoDescriptor);
+//Caracteristica Velocidad del viento
+ //pHeart->addCharacteristic(&VelocidadVientoCharacteristics);
+  //DireccionVientoDescriptor.setValue("Position 0 - 6");
+  //DireccionVientoCharacteristics.addDescriptor(&VelocidadVientoDescriptor);
+//Precipitacion
+ //pHeart->addCharacteristic(&PrecipitacionCharacteristics);
+  //PrecipitacionDescriptor.setValue("Position 0 - 6");
+  //PrecipitacionCharacteristics.addDescriptor(&PrecipitacionDescriptor);
+// pHeart->addCharacteristic(&AltitudCharacteristics);
+//  AltitudCharacteristics.addDescriptor(&AltitudDescriptor);
+
+  pServer->getAdvertising()->addServiceUUID(MeteoritoService);
+  pMeteorito->start();
+
+  // Start advertising
+  pServer->getAdvertising()->start();
+}
+
 const char tipoNubosidad[5]={'C','M','N','P','D'};
   /* D - despejado
    * P - poco nuboso
