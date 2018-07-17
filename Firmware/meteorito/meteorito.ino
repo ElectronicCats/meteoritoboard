@@ -27,9 +27,20 @@ por tu localidad, y ha encontrado útil nuestro código,
 Distribuido tal cual; no se otorga ninguna garantía. 
 Bajo Licencia MIT
 ************************************************************/
+#define BLE//Variable para elegir BLE o WiFi
+
+#ifdef WIFI
 //Incluir la biblioteca WiFi
 #include <WiFi.h>
 #include "configuracion.h"
+#endif
+#ifdef BLE
+#include <BLEDevice.h>
+#include <BLEUtils.h>
+#include <BLEServer.h>
+#include <BLE2902.h>
+#endif
+
 #include  <DHT.h>
 #include <Wire.h>
 #include <Adafruit_Sensor.h>
