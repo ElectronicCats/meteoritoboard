@@ -360,6 +360,8 @@ void setup () {
   Serial.println("Tu estas conectado a la red WiFi");
   
   printWifiStatus();
+#endif
+  InitBLE();
 
   //Iniciamos anemometro
   pinMode(pinAnemometro, INPUT);
