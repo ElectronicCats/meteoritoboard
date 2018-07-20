@@ -485,7 +485,7 @@ void printWifiStatus()
   Serial.print(rssi);
   Serial.println(" dBm");
 }
-
+#endif
 void interrupcionViento() {
   if( millis()>(50+tiempoAntes)){
     bandera=!bandera;
