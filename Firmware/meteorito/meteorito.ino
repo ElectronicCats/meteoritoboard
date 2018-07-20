@@ -183,7 +183,7 @@ String httpHeader = "POST /api/device/metrics HTTP/1.1\r\n"
 
 //Inicializar el WiFi cliente objeto
 WiFiClient client;
-
+#endif
 /*Funcion para obtener direccion del viento */
 /*
 int leerDireccion(){
