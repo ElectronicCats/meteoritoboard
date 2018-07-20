@@ -174,7 +174,7 @@ const char tipoNubosidad[5]={'C','M','N','P','D'};
    * C - cubierto
    * O - opcional
    */
-
+#ifdef WIFI
 //Formamos el header para enviar a la pagina
 String httpHeader = "POST /api/device/metrics HTTP/1.1\r\n"
                     "Host: redmet.org\r\n" 
