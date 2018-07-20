@@ -351,6 +351,7 @@ void setup () {
   }
 
 //verificación del modulo WiFi y la conexión a internet
+#ifdef WIFI
   WiFi.begin(ssid, password);
   
   while (WiFi.status() != WL_CONNECTED) {
