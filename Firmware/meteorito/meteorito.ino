@@ -387,25 +387,62 @@ void loop () {
   #ifdef WIFI
   envioDatos();
 #endif
-  //Enviar datos por BLE
-  char TempS[10];
-  dtostrf(temperatura, 2, 2, TempS);
-  TemperaturaDescriptor.setValue(TempS);
+  //ENVIAR DATOS POR BLE
   
-  
-  char HumS[8];
-  dtostrf(humedad, 2, 2, HumS);
-  HumedadDescriptor.setValue(HumS);
+  //Temperatura
+    char TempS[4];
+    char TempF[4];
+    int Tf= temperatura*100;
+    int t =0;
+    dtostrf(Tf, 4, 0, TempS);
+  for(t=0;t<=3;t++){
+    TempF[t]=TempS[t]-48;
+    }
+    t=0;
+    TemperaturaCharacteristics.setValue(TempF);
+    TemperaturaCharacteristics.notify(); 
 
+  //Humedad 
+  char HumS[4];
+  char HumF[4];
+  int Hf= humedad*100;
+  dtostrf(Hf, 4, 0, HumS);
+  for(t;t<=3;t++){
+    HumF[t]=HumS[t]-48;
+    }
+    t=0;
+  HumedadCharacteristics.setValue(HumF);
+  HumedadCharacteristics.notify(); 
 
-  char UvS[8];
-  dtostrf(leerUV(), 2, 2, UvS);
-  UvDescriptor.setValue(UvS);
+ //Uvs
+  char UvS[4];
+  char UvF[4];
+  int Uf= leerUV()*100;
+  dtostrf(Uf, 4, 0, UvS);
+  for(t;t<=3;t++){
+    UvF[t]=UvS[t]-48;
+    }
+    t=0;
+  UvCharacteristics.setValue(UvF);
+  UvCharacteristics.notify(); 
   
-  
+  //Presión
   char PresS[8];
-  dtostrf(event.pressure*0.1, 2, 2, PresS);
-  PresionDescriptor.setValue(PresS);
+  char PresF[8];
+  float PF=event.pressure*0.1;
+  int Pf= PF*100;
+  dtostrf(Pf, 4, 0, PresS);
+  PresF[4]=0;
+  PresF[5]=0;
+  PresF[6]=0;
+  PresF[7]=0;
+  PresF[8]=0;
+  for(t;t<=3;t++){
+    PresF[t]=PresS[t]-48;
+    }
+    t=0;
+  PresionCharacteristics.setValue(PresF);
+  PresionCharacteristics.notify(); 
 
 
   //NubosidadDescriptor.setValue(nubosidad());
