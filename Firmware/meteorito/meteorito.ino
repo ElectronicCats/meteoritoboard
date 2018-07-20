@@ -263,6 +263,7 @@ void presion(){
 /*
  *Función de envio de datos 
  */
+ #ifdef WIFI
 static void envioDatos () {
   if (client.connect(Servidor, 80) <= 0)
   {
@@ -332,7 +333,7 @@ static void envioDatos () {
     client.stop(); // stop() cierra una conexión TCP.
     */
 }
-
+#endif
 void setup () {
   Serial.begin(9600);
   
