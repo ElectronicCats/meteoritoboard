@@ -27,19 +27,14 @@ por tu localidad, y ha encontrado útil nuestro código,
 Distribuido tal cual; no se otorga ninguna garantía. 
 Bajo Licencia MIT
 ************************************************************/
-#define BLE//Variable para elegir BLE o WiFi
-
-#ifdef WIFI
 //Incluir la biblioteca WiFi
 #include <WiFi.h>
 #include "configuracion.h"
-#endif
-#ifdef BLE
+
 #include <BLEDevice.h>
 #include <BLEUtils.h>
 #include <BLEServer.h>
 #include <BLE2902.h>
-#endif
 
 #include  <DHT.h>
 #include <Wire.h>
@@ -174,7 +169,6 @@ const char tipoNubosidad[5]={'C','M','N','P','D'};
    * C - cubierto
    * O - opcional
    */
-#ifdef WIFI
 //Formamos el header para enviar a la pagina
 String httpHeader = "POST /api/device/metrics HTTP/1.1\r\n"
                     "Host: redmet.org\r\n" 
@@ -183,7 +177,7 @@ String httpHeader = "POST /api/device/metrics HTTP/1.1\r\n"
 
 //Inicializar el WiFi cliente objeto
 WiFiClient client;
-#endif
+
 /*Funcion para obtener direccion del viento */
 /*
 int leerDireccion(){
@@ -263,7 +257,7 @@ void presion(){
 /*
  *Función de envio de datos 
  */
- #ifdef WIFI
+
 static void envioDatos () {
   if (client.connect(Servidor, 80) <= 0)
   {
@@ -333,7 +327,7 @@ static void envioDatos () {
     client.stop(); // stop() cierra una conexión TCP.
     */
 }
-#endif
+
 void setup () {
   Serial.begin(9600);
   
@@ -351,7 +345,7 @@ void setup () {
   }
 
 //verificación del modulo WiFi y la conexión a internet
-#ifdef WIFI
+
   WiFi.begin(ssid, password);
   
   while (WiFi.status() != WL_CONNECTED) {
@@ -362,7 +356,7 @@ void setup () {
   Serial.println("Tu estas conectado a la red WiFi");
   
   printWifiStatus();
-#endif
+
   InitBLE();
 
   //Iniciamos anemometro
@@ -384,9 +378,8 @@ void loop () {
   bmp.getEvent(&event);
   
   presion();
-  #ifdef WIFI
   envioDatos();
-#endif
+
   //ENVIAR DATOS POR BLE
   
   //Temperatura
@@ -467,7 +460,6 @@ void loop () {
  * Funcion que imprime status de WiFi, 
  * nombre de red, local IP e intensidad de señal
 */
-#ifdef WIFI
 void printWifiStatus()
 {
   // imprime el SSID de la red a la que está conectado
