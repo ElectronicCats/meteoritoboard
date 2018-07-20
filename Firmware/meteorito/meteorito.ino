@@ -467,6 +467,7 @@ void loop () {
  * Funcion que imprime status de WiFi, 
  * nombre de red, local IP e intensidad de señal
 */
+#ifdef WIFI
 void printWifiStatus()
 {
   // imprime el SSID de la red a la que está conectado
