@@ -1,4 +1,4 @@
-update=jueves, 02 '02e' noviembre '02e' 2017, 17:46:21
+update=Monday, 02 '02e' July '02e' 2018, 02:45:42 PM
 version=1
 last_client=kicad
 [pcbnew]
@@ -58,4 +58,3 @@ LibName26=opto
 LibName27=atmel
 LibName28=contrib
 LibName29=valves
-LibName30=/Users/sabas/Documents/Kicad Librerias/KicadLibrary/wemos_mini
