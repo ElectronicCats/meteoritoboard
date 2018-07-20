@@ -351,6 +351,7 @@ void setup () {
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
+    
     }
 //Tu estas conectado ahora
   Serial.println("Tu estas conectado a la red WiFi");
@@ -383,58 +384,39 @@ void loop () {
   //ENVIAR DATOS POR BLE
   
   //Temperatura
-    char TempS[4];
-    char TempF[4];
-    int Tf= temperatura*100;
-    int t =0;
-    dtostrf(Tf, 4, 0, TempS);
-  for(t=0;t<=3;t++){
-    TempF[t]=TempS[t]-48;
-    }
-    t=0;
-    TemperaturaCharacteristics.setValue(TempF);
+    uint8_t tempData[2];
+    uint16_t tempValue;
+    tempValue = (uint16_t)(temperatura *100);
+    tempData[0] = tempValue;
+    tempData[1] = tempValue>>8;
+    TemperaturaCharacteristics.setValue(tempData,2);
     TemperaturaCharacteristics.notify(); 
 
   //Humedad 
-  char HumS[4];
-  char HumF[4];
-  int Hf= humedad*100;
-  dtostrf(Hf, 4, 0, HumS);
-  for(t;t<=3;t++){
-    HumF[t]=HumS[t]-48;
-    }
-    t=0;
-  HumedadCharacteristics.setValue(HumF);
+  uint8_t humData[2];
+  uint16_t humValue;
+  humValue = (uint16_t)(humedad*100);
+  humData[0] = humValue;
+  humData[1] = humValue>>8;
+  HumedadCharacteristics.setValue(humData,2);
   HumedadCharacteristics.notify(); 
 
  //Uvs
-  char UvS[4];
-  char UvF[4];
-  int Uf= leerUV()*100;
-  dtostrf(Uf, 4, 0, UvS);
-  for(t;t<=3;t++){
-    UvF[t]=UvS[t]-48;
-    }
-    t=0;
-  UvCharacteristics.setValue(UvF);
+  uint8_t uvData[2];
+  uint16_t uvValue;
+  uvValue = (uint16_t)(leerUV()*100);
+  uvData[0] = uvValue;
+  uvData[1] = uvValue>>8;
+  UvCharacteristics.setValue(uvData,2);
   UvCharacteristics.notify(); 
   
   //Presión
-  char PresS[8];
-  char PresF[8];
-  float PF=event.pressure*0.1;
-  int Pf= PF*100;
-  dtostrf(Pf, 4, 0, PresS);
-  PresF[4]=0;
-  PresF[5]=0;
-  PresF[6]=0;
-  PresF[7]=0;
-  PresF[8]=0;
-  for(t;t<=3;t++){
-    PresF[t]=PresS[t]-48;
-    }
-    t=0;
-  PresionCharacteristics.setValue(PresF);
+  uint8_t prData[2];
+  uint16_t prValue;
+  prValue = (uint16_t)(event.pressure*0.1*100);
+  prData[0] = prValue;
+  prData[1] = prValue>>8;
+  PresionCharacteristics.setValue(prData,2);
   PresionCharacteristics.notify(); 
 
 
