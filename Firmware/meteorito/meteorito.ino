@@ -347,12 +347,16 @@ void setup () {
 //verificación del modulo WiFi y la conexión a internet
 
   WiFi.begin(ssid, password);
-  
-  while (WiFi.status() != WL_CONNECTED) {
+  int cont = 0;
+  while(cont<=10){
+   (WiFi.status() != WL_CONNECTED); 
     delay(500);
     Serial.print(".");
-    
+    cont++;
+    Serial.print(cont);
+     
     }
+    //cont = 0;
 //Tu estas conectado ahora
   Serial.println("Tu estas conectado a la red WiFi");
   
