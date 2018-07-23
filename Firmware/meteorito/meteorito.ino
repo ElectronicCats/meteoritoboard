@@ -137,8 +137,8 @@ void InitBLE() {
  pMeteorito->addCharacteristic(&UvCharacteristics);
   UvCharacteristics.addDescriptor(&UvDescriptor);
  //Caracteristica Nubosidad
- //pMeteorito->addCharacteristic(&NubosidadCharacteristics);
-  //NubosidadCharacteristics.addDescriptor(&NubosidadDescriptor);
+ pMeteorito->addCharacteristic(&NubosidadCharacteristics);
+ NubosidadCharacteristics.addDescriptor(&NubosidadDescriptor);
 //Caracteristica Dirección del viento
  //pHeart->addCharacteristic(&DireccionVientoCharacteristics);
   //DireccionVientoDescriptor.setValue("Position 0 - 6");
