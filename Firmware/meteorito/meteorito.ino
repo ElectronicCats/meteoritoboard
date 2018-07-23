@@ -422,6 +422,12 @@ void loop () {
   prData[1] = prValue>>8;
   PresionCharacteristics.setValue(prData,2);
   PresionCharacteristics.notify(); 
+  
+  //Nubosidad
+  char nubo [5];
+  dtostrf(nubosidad(),1,2,nubo);
+  NubosidadCharacteristics.setValue(nubo);
+  NubosidadCharacteristics.notify();
 
 
   //NubosidadDescriptor.setValue(nubosidad());
