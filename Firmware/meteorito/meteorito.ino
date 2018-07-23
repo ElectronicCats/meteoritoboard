@@ -100,7 +100,7 @@ BLEDescriptor HumedadDescriptor(BLEUUID((uint16_t)0x290C));
 BLEDescriptor PresionDescriptor(BLEUUID((uint16_t)0x290C));
 BLEDescriptor UvDescriptor(BLEUUID((uint16_t)0x290C));
 //BLEDescriptor DireccionVientoDescriptor(BLEUUID((uint16_t)0x290C));
-//BLEDescriptor NubosidadDescriptor(BLEUUID((uint16_t)0x290C));
+BLEDescriptor NubosidadDescriptor(BLEUUID((uint16_t)0x290C));
 //BLEDescriptor VelocidadVientoDescriptor(BLEUUID((uint16_t)0x290C));
 //BLEDescriptor PrecipitacionDescriptor(BLEUUID((uint16_t)0x290C));
 //BLEDescriptor AltitudDescriptor(BLEUUID((uint16_t)0x290C));
