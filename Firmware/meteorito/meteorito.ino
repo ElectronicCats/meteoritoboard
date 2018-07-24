@@ -9,7 +9,7 @@ Este ejemplo demuestra la conexion y envio de datos
 con un modulo ESP32 a la plataforma 
 http://redmet.org
 
-Entorno de Desarrollo Especifico:
+Entorno de Desarrollo Especifico:  
   IDE: Arduino 1.8.4
   Plataforma de Hardware:
     - ESP32 WEMOS D1 Mini
@@ -30,6 +30,12 @@ Bajo Licencia MIT
 //Incluir la biblioteca WiFi
 #include <WiFi.h>
 #include "configuracion.h"
+
+#include <BLEDevice.h>
+#include <BLEUtils.h>
+#include <BLEServer.h>
+#include <BLE2902.h>
+
 #include  <DHT.h>
 #include <Wire.h>
 #include <Adafruit_Sensor.h>
@@ -39,12 +45,13 @@ Adafruit_BMP085_Unified bmp = Adafruit_BMP085_Unified(10085);
 
 sensors_event_t event;
 
-int sensor = 16;
+int dhtpin = 23;
+float temperature;
 float temperatura;
 float humedad;
-
+   
 /*Variables Anemometro*/
-const int pinAnemometro = 27;
+const int pinAnemometro = 14;
 unsigned long tiempoAntes;
 unsigned long  tiempo=0;
 unsigned long sumaTiempo=0;
@@ -55,7 +62,7 @@ bool bandera=0;
 const byte pinRayosUV = 12;         //pin Analogico
 
 /*Variables Nubosidad*/
-const byte pinNubosidad = A0;
+const byte pinNubosidad = 13;
 
 /*Variables Direccion de Viento*/
 int sumaVeleta=0;      
@@ -73,17 +80,95 @@ byte contadorDos=0;
 const int capacidadTotal=10;   //capacidad combinada de ambos lados en mL
 
 
-DHT dht (sensor,DHT22);
+DHT dht (dhtpin,DHT22);
 
-const char tipoNubosidad[6]={'C','M','N','P','D','O'};
+bool _BLEClientConnected = false;
+
+#define MeteoritoService BLEUUID((uint16_t)0x181A)
+BLECharacteristic TemperaturaCharacteristics(BLEUUID((uint16_t)0x2A6E), BLECharacteristic::PROPERTY_READ );
+BLECharacteristic HumedadCharacteristics(BLEUUID((uint16_t)0x2A6F), BLECharacteristic::PROPERTY_READ);
+BLECharacteristic PresionCharacteristics(BLEUUID((uint16_t)0x2A6D), BLECharacteristic::PROPERTY_READ);
+BLECharacteristic UvCharacteristics(BLEUUID((uint16_t)0x2A76), BLECharacteristic::PROPERTY_READ);
+//BLECharacteristic DireccionVientoCharacteristics(BLEUUID((uint16_t)0x2A73), BLECharacteristic::PROPERTY_READ);
+BLECharacteristic NubosidadCharacteristics(BLEUUID((uint16_t)0x2A58), BLECharacteristic::PROPERTY_READ);
+//BLECharacteristic VelocidadVientoCharacteristics(BLEUUID((uint16_t) 0x2A72), BLECharacteristic::PROPERTY_READ);
+//BLECharacteristic PrecipitacionCharacteristics(BLEUUID((uint16_t) 0x2A78), BLECharacteristic::PROPERTY_READ);
+//BLECharacteristic AltitudCharacteristics(BLEUUID((uint16_t) 0x2A6C), BLECharacteristic::PROPERTY_READ);
+
+BLEDescriptor TemperaturaDescriptor(BLEUUID((uint16_t)0x290C));
+BLEDescriptor HumedadDescriptor(BLEUUID((uint16_t)0x290C));
+BLEDescriptor PresionDescriptor(BLEUUID((uint16_t)0x290C));
+BLEDescriptor UvDescriptor(BLEUUID((uint16_t)0x290C));
+//BLEDescriptor DireccionVientoDescriptor(BLEUUID((uint16_t)0x290C));
+BLEDescriptor NubosidadDescriptor(BLEUUID((uint16_t)0x290C));
+//BLEDescriptor VelocidadVientoDescriptor(BLEUUID((uint16_t)0x290C));
+//BLEDescriptor PrecipitacionDescriptor(BLEUUID((uint16_t)0x290C));
+//BLEDescriptor AltitudDescriptor(BLEUUID((uint16_t)0x290C));
+
+class MyServerCallbacks : public BLEServerCallbacks {
+    void onConnect(BLEServer* pServer) {
+      _BLEClientConnected = true;
+    };
+
+    void onDisconnect(BLEServer* pServer) {
+      _BLEClientConnected = false;
+    }
+};
+
+void InitBLE() {
+  BLEDevice::init("Estación metereológica");
+  // Create the BLE Server
+  BLEServer *pServer = BLEDevice::createServer();
+  pServer->setCallbacks(new MyServerCallbacks());
+
+  // Create the BLE Service
+  BLEService *pMeteorito = pServer->createService(MeteoritoService);
+//Caracteristica Temperatura
+  pMeteorito->addCharacteristic(&TemperaturaCharacteristics);
+  //TemperaturaDescriptor.setValue("Position 0 - 6");
+  TemperaturaCharacteristics.addDescriptor(&TemperaturaDescriptor);
+//Caracteristica Humedad
+  pMeteorito->addCharacteristic(&HumedadCharacteristics);
+  HumedadCharacteristics.addDescriptor(&HumedadDescriptor);
+//Caracteristica Presión
+ pMeteorito->addCharacteristic(&PresionCharacteristics);
+  PresionCharacteristics.addDescriptor(&PresionDescriptor);
+//Caracteristica Uv
+ pMeteorito->addCharacteristic(&UvCharacteristics);
+  UvCharacteristics.addDescriptor(&UvDescriptor);
+ //Caracteristica Nubosidad
+ pMeteorito->addCharacteristic(&NubosidadCharacteristics);
+ NubosidadCharacteristics.addDescriptor(&NubosidadDescriptor);
+//Caracteristica Dirección del viento
+ //pHeart->addCharacteristic(&DireccionVientoCharacteristics);
+  //DireccionVientoDescriptor.setValue("Position 0 - 6");
+  //DireccionVientoCharacteristics.addDescriptor(&DireccionVientoDescriptor);
+//Caracteristica Velocidad del viento
+ //pHeart->addCharacteristic(&VelocidadVientoCharacteristics);
+  //DireccionVientoDescriptor.setValue("Position 0 - 6");
+  //DireccionVientoCharacteristics.addDescriptor(&VelocidadVientoDescriptor);
+//Precipitacion
+ //pHeart->addCharacteristic(&PrecipitacionCharacteristics);
+  //PrecipitacionDescriptor.setValue("Position 0 - 6");
+  //PrecipitacionCharacteristics.addDescriptor(&PrecipitacionDescriptor);
+// pHeart->addCharacteristic(&AltitudCharacteristics);
+//  AltitudCharacteristics.addDescriptor(&AltitudDescriptor);
+
+  pServer->getAdvertising()->addServiceUUID(MeteoritoService);
+  pMeteorito->start();
+
+  // Start advertising
+  pServer->getAdvertising()->start();
+}
+
+const char tipoNubosidad[5]={'C','M','N','P','D'};
   /* D - despejado
    * P - poco nuboso
    * N - nuboso
    * M - muy nuboso
    * C - cubierto
-   * O - 
+   * O - opcional
    */
-
 //Formamos el header para enviar a la pagina
 String httpHeader = "POST /api/device/metrics HTTP/1.1\r\n"
                     "Host: redmet.org\r\n" 
@@ -116,7 +201,7 @@ int leerUV(){
 /*Funcion para obtener nubosidad*/
 char nubosidad() {
   int lecturaSensor=analogRead(pinNubosidad);
-  char nubosidad = tipoNubosidad[map(lecturaSensor, 0, 1023, 0, 6)];
+  char nubosidad = tipoNubosidad[map(lecturaSensor, 0, 4096, 0, 5)];
   Serial.print("Nubosidad: "); 
   Serial.println(nubosidad); 
   return nubosidad;
@@ -172,6 +257,7 @@ void presion(){
 /*
  *Función de envio de datos 
  */
+
 static void envioDatos () {
   if (client.connect(Servidor, 80) <= 0)
   {
@@ -259,16 +345,24 @@ void setup () {
   }
 
 //verificación del modulo WiFi y la conexión a internet
+
   WiFi.begin(ssid, password);
-  
-  while (WiFi.status() != WL_CONNECTED) {
+  int cont = 0;
+  while(cont<=10){
+   (WiFi.status() != WL_CONNECTED); 
     delay(500);
     Serial.print(".");
+    cont++;
+    Serial.print(cont);
+     
     }
+   
 //Tu estas conectado ahora
   Serial.println("Tu estas conectado a la red WiFi");
   
   printWifiStatus();
+
+  InitBLE();
 
   //Iniciamos anemometro
   pinMode(pinAnemometro, INPUT);
@@ -284,13 +378,62 @@ void setup () {
 void loop () {
   temperatura = dht.readTemperature();
   humedad = dht.readHumidity();
-   
+     
   /* Obtener una nueva lectura del sensor BMP180 */ 
   bmp.getEvent(&event);
   
   presion();
-  
   envioDatos();
+
+  //ENVIAR DATOS POR BLE
+  
+  //Temperatura
+    uint8_t tempData[2];
+    uint16_t tempValue;
+    tempValue = (uint16_t)(temperatura *100);
+    tempData[0] = tempValue;
+    tempData[1] = tempValue>>8;
+    TemperaturaCharacteristics.setValue(tempData,2);
+    TemperaturaCharacteristics.notify(); 
+
+  //Humedad 
+  uint8_t humData[2];
+  uint16_t humValue;
+  humValue = (uint16_t)(humedad*100);
+  humData[0] = humValue;
+  humData[1] = humValue>>8;
+  HumedadCharacteristics.setValue(humData,2);
+  HumedadCharacteristics.notify(); 
+
+ //Uvs
+  uint8_t uvData[2];
+  uint16_t uvValue;
+  uvValue = (uint16_t)(leerUV()*100);
+  uvData[0] = uvValue;
+  uvData[1] = uvValue>>8;
+  UvCharacteristics.setValue(uvData,2);
+  UvCharacteristics.notify(); 
+  
+  //Presión
+  uint8_t prData[2];
+  uint16_t prValue;
+  prValue = (uint16_t)(event.pressure*0.1*100);
+  prData[0] = prValue;
+  prData[1] = prValue>>8;
+  PresionCharacteristics.setValue(prData,2);
+  PresionCharacteristics.notify(); 
+  
+  //Nubosidad
+  char nubo [5];
+  dtostrf(nubosidad(),1,2,nubo);
+  NubosidadCharacteristics.setValue(nubo);
+  NubosidadCharacteristics.notify();
+
+
+  //NubosidadDescriptor.setValue(nubosidad());
+ 
+
+  
 
     Serial.println("");
    //Mostrar variables
