@@ -356,7 +356,7 @@ void setup () {
     Serial.print(cont);
      
     }
-    //cont = 0;
+   
 //Tu estas conectado ahora
   Serial.println("Tu estas conectado a la red WiFi");
   
