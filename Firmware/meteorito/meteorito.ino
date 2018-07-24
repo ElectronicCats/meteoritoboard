@@ -3,7 +3,9 @@ Meteorito.ino
 Ejemplo de Estacion Meteorologica con ESP8266 
 para redmet.org y Meteorito
 Andres Sabas @ The Inventor's House
+Brando Are @ Electronic Cats
 Fecha Original de Creación: 28 de Octubre del 2017
+Ultima Actualizacion: 24 Julio 2018
 
 Este ejemplo demuestra la conexion y envio de datos 
 con un modulo ESP32 a la plataforma 
@@ -20,7 +22,7 @@ Entorno de Desarrollo Especifico:
   o Tarjeta de desarrollo Meteorito por Electronic Cats
 
 Este código es beerware; si me ves 
-(o cualquier otro miembreo de The Inventors House) 
+(o cualquier otro miembro de Electronic Cats) 
 por tu localidad, y ha encontrado útil nuestro código,
 ¡por favor cómprenos una ronda!
 
@@ -30,12 +32,12 @@ Bajo Licencia MIT
 //Incluir la biblioteca WiFi
 #include <WiFi.h>
 #include "configuracion.h"
-
+//Incluir la biblioteca BLE
 #include <BLEDevice.h>
 #include <BLEUtils.h>
 #include <BLEServer.h>
 #include <BLE2902.h>
-
+//Incluir la biblioteca Sensores
 #include  <DHT.h>
 #include <Wire.h>
 #include <Adafruit_Sensor.h>
