@@ -255,10 +255,9 @@ void presion(){
 }
 
 /*
- *Función de envio de datos 
+ *Función de envio de datos via WiFi
  */
-
-static void envioDatos () {
+static void envioDatosWiFi() {
   if (client.connect(Servidor, 80) <= 0)
   {
     Serial.println(F("Fallo conexion a servidor."));
@@ -314,18 +313,56 @@ static void envioDatos () {
         String line = client.readStringUntil('\r');
         Serial.print(line);
     }
-
+}
 /*
-  // available() devolverá el número de caracteres
-  // actualmente en el búfer de recepción.
-  while (client.available())
-    Serial.write(client.read()); // read() obtiene el carácter de FIFO
+ *Función de envio de datos via BLE
+ */
+static void envidoDatosBLE(){
+  
+  //Temperatura
+    uint8_t tempData[2];
+    uint16_t tempValue;
+    tempValue = (uint16_t)(temperatura *100);
+    tempData[0] = tempValue;
+    tempData[1] = tempValue>>8;
+    TemperaturaCharacteristics.setValue(tempData,2);
+    TemperaturaCharacteristics.notify(); 
 
-  // connected () es un valor de retorno booleano - 1 si
-  // la conexión está activa, 0 si está cerrada.
-  if (client.connected())
-    client.stop(); // stop() cierra una conexión TCP.
-    */
+  //Humedad 
+  uint8_t humData[2];
+  uint16_t humValue;
+  humValue = (uint16_t)(humedad*100);
+  humData[0] = humValue;
+  humData[1] = humValue>>8;
+  HumedadCharacteristics.setValue(humData,2);
+  HumedadCharacteristics.notify(); 
+
+ //Uvs
+  uint8_t uvData[2];
+  uint16_t uvValue;
+  uvValue = (uint16_t)(leerUV()*100);
+  uvData[0] = uvValue;
+  uvData[1] = uvValue>>8;
+  UvCharacteristics.setValue(uvData,2);
+  UvCharacteristics.notify(); 
+  
+  //Presión
+  uint8_t prData[2];
+  uint16_t prValue;
+  prValue = (uint16_t)(event.pressure*0.1*100);
+  prData[0] = prValue;
+  prData[1] = prValue>>8;
+  PresionCharacteristics.setValue(prData,2);
+  PresionCharacteristics.notify(); 
+  
+  //Nubosidad
+  char nubo [5];
+  dtostrf(nubosidad(),1,2,nubo);
+  NubosidadCharacteristics.setValue(nubo);
+  NubosidadCharacteristics.notify();
+
+
+  //NubosidadDescriptor.setValue(nubosidad());
 }
 
 void setup () {
@@ -383,69 +420,21 @@ void loop () {
   bmp.getEvent(&event);
   
   presion();
-  envioDatos();
-
-  //ENVIAR DATOS POR BLE
   
-  //Temperatura
-    uint8_t tempData[2];
-    uint16_t tempValue;
-    tempValue = (uint16_t)(temperatura *100);
-    tempData[0] = tempValue;
-    tempData[1] = tempValue>>8;
-    TemperaturaCharacteristics.setValue(tempData,2);
-    TemperaturaCharacteristics.notify(); 
-
-  //Humedad 
-  uint8_t humData[2];
-  uint16_t humValue;
-  humValue = (uint16_t)(humedad*100);
-  humData[0] = humValue;
-  humData[1] = humValue>>8;
-  HumedadCharacteristics.setValue(humData,2);
-  HumedadCharacteristics.notify(); 
-
- //Uvs
-  uint8_t uvData[2];
-  uint16_t uvValue;
-  uvValue = (uint16_t)(leerUV()*100);
-  uvData[0] = uvValue;
-  uvData[1] = uvValue>>8;
-  UvCharacteristics.setValue(uvData,2);
-  UvCharacteristics.notify(); 
+  envioDatosWiFi();
+  envioDatosBLE();
   
-  //Presión
-  uint8_t prData[2];
-  uint16_t prValue;
-  prValue = (uint16_t)(event.pressure*0.1*100);
-  prData[0] = prValue;
-  prData[1] = prValue>>8;
-  PresionCharacteristics.setValue(prData,2);
-  PresionCharacteristics.notify(); 
-  
-  //Nubosidad
-  char nubo [5];
-  dtostrf(nubosidad(),1,2,nubo);
-  NubosidadCharacteristics.setValue(nubo);
-  NubosidadCharacteristics.notify();
-
-
-  //NubosidadDescriptor.setValue(nubosidad());
- 
-
-  
-
-    Serial.println("");
-   //Mostrar variables
-   Serial.print("temperatura: ");
-   Serial.println(temperatura);
-   Serial.print(" humedad: ");
-   Serial.println(humedad);
-   Serial.print("UV nivel luz: "); 
-   Serial.println(leerUV());
-   Serial.print("Direccion del viento: "); 
-//   Serial.println(leerDireccion());
-   delay(500);
+  Serial.println("");
+  //Mostrar variables
+  Serial.print("temperatura: ");
+  Serial.println(temperatura);
+  Serial.print(" humedad: ");
+  Serial.println(humedad);
+  Serial.print("UV nivel luz: "); 
+  Serial.println(leerUV());
+  Serial.print("Direccion del viento: "); 
+  //Serial.println(leerDireccion());
+  delay(500);
 }
 
 /*
