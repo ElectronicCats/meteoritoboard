@@ -1,36 +1,6 @@
-EESchema Schematic File Version 2
-LIBS:power
-LIBS:device
-LIBS:transistors
-LIBS:conn
-LIBS:linear
-LIBS:regul
-LIBS:74xx
-LIBS:cmos4000
-LIBS:adc-dac
-LIBS:memory
-LIBS:xilinx
-LIBS:microcontrollers
-LIBS:dsp
-LIBS:microchip
-LIBS:analog_switches
-LIBS:motorola
-LIBS:texas
-LIBS:intel
-LIBS:audio
-LIBS:interface
-LIBS:digital-audio
-LIBS:philips
-LIBS:display
-LIBS:cypress
-LIBS:siliconi
-LIBS:opto
-LIBS:atmel
-LIBS:contrib
-LIBS:valves
-LIBS:wemos_mini
+EESchema Schematic File Version 4
 LIBS:meteorito-cache
-EELAYER 25 0
+EELAYER 26 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
@@ -45,7 +15,7 @@ Comment3 ""
 Comment4 ""
 $EndDescr
 $Comp
-L CONN_01X04 P3
+L meteorito-rescue:CONN_01X04 P3
 U 1 1 5973B1FD
 P 2370 2400
 F 0 "P3" H 2370 2650 50  0000 C CNN
@@ -56,7 +26,7 @@ F 3 "" H 2370 2400 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L CONN_01X05 P2
+L meteorito-rescue:CONN_01X05 P2
 U 1 1 5973BC79
 P 2300 3875
 F 0 "P2" H 2300 4175 50  0000 C CNN
@@ -85,7 +55,7 @@ TX
 Text Label 1850 1195 0    60   ~ 0
 D7
 $Comp
-L GND #PWR06
+L power:GND #PWR06
 U 1 1 59FBB4DC
 P 1875 2355
 F 0 "#PWR06" H 1875 2105 50  0001 C CNN
@@ -96,7 +66,7 @@ F 3 "" H 1875 2355 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L +5V #PWR07
+L power:+5V #PWR07
 U 1 1 59FBB563
 P 2025 2250
 F 0 "#PWR07" H 2025 2100 50  0001 C CNN
@@ -111,7 +81,7 @@ SCL
 Text Label 2020 2550 0    60   ~ 0
 SDA
 $Comp
-L GND #PWR08
+L power:GND #PWR08
 U 1 1 59FBB69A
 P 1905 3880
 F 0 "#PWR08" H 1905 3630 50  0001 C CNN
@@ -122,7 +92,7 @@ F 3 "" H 1905 3880 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L +5V #PWR010
+L power:+5V #PWR010
 U 1 1 59FBB879
 P 1960 3675
 F 0 "#PWR010" H 1960 3525 50  0001 C CNN
@@ -134,7 +104,7 @@ F 3 "" H 1960 3675 50  0000 C CNN
 $EndComp
 NoConn ~ 2100 3775
 $Comp
-L +5V #PWR04
+L power:+5V #PWR04
 U 1 1 59FBB39C
 P 1860 995
 F 0 "#PWR04" H 1860 845 50  0001 C CNN
@@ -145,7 +115,7 @@ F 3 "" H 1860 995 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR05
+L power:GND #PWR05
 U 1 1 59FBB3BC
 P 1760 1095
 F 0 "#PWR05" H 1760 845 50  0001 C CNN
@@ -161,7 +131,7 @@ NoConn ~ 8135 2510
 Text Notes 7290 790  0    60   ~ 0
 Wemos D1 ESP32
 $Comp
-L CONN_01X03 P1
+L meteorito-rescue:CONN_01X03 P1
 U 1 1 5973B1A0
 P 2275 1095
 F 0 "P1" H 2275 1295 50  0000 C CNN
@@ -172,7 +142,7 @@ F 3 "" H 2275 1095 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L CONN_01X03 P?
+L meteorito-rescue:CONN_01X03 P?
 U 1 1 5B3AB6AA
 P 2325 5120
 F 0 "P?" H 2325 5320 50  0000 C CNN
@@ -183,7 +153,7 @@ F 3 "" H 2325 5120 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L +5V #PWR?
+L power:+5V #PWR?
 U 1 1 5B3ABCF3
 P 1760 4215
 F 0 "#PWR?" H 1760 4065 50  0001 C CNN
@@ -196,7 +166,7 @@ $EndComp
 Text Label 1950 3975 0    60   ~ 0
 OUT
 $Comp
-L R_Small R?
+L Device:R_Small R?
 U 1 1 5B3ABF7D
 P 1900 6565
 F 0 "R?" H 1930 6585 50  0000 L CNN
@@ -207,7 +177,7 @@ F 3 "" H 1900 6565 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L R_Small R?
+L Device:R_Small R?
 U 1 1 5B3AC023
 P 1900 6850
 F 0 "R?" H 1930 6870 50  0000 L CNN
@@ -218,7 +188,7 @@ F 3 "" H 1900 6850 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR?
+L power:GND #PWR?
 U 1 1 5B3AC2DB
 P 1900 7050
 F 0 "#PWR?" H 1900 6800 50  0001 C CNN
@@ -231,7 +201,7 @@ $EndComp
 Text Label 2115 6710 0    60   ~ 0
 D13
 $Comp
-L +3.3V #PWR?
+L power:+3.3V #PWR?
 U 1 1 5B3AC40A
 P 1900 6370
 F 0 "#PWR?" H 1900 6220 50  0001 C CNN
@@ -242,7 +212,7 @@ F 3 "" H 1900 6370 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L GND #PWR?
+L power:GND #PWR?
 U 1 1 5B3AC68F
 P 1975 5220
 F 0 "#PWR?" H 1975 4970 50  0001 C CNN
@@ -253,7 +223,7 @@ F 3 "" H 1975 5220 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L CONN_01X10 P?
+L meteorito-rescue:CONN_01X10 P?
 U 1 1 5B3ACF92
 P 7335 2260
 F 0 "P?" H 7335 2810 50  0000 C CNN
@@ -264,7 +234,7 @@ F 3 "" H 7335 2260 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L CONN_01X10 P?
+L meteorito-rescue:CONN_01X10 P?
 U 1 1 5B3AD073
 P 6535 2265
 F 0 "P?" H 6535 2815 50  0000 C CNN
@@ -275,7 +245,7 @@ F 3 "" H 6535 2265 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L CONN_01X10 P?
+L meteorito-rescue:CONN_01X10 P?
 U 1 1 5B3AD0C5
 P 7935 2260
 F 0 "P?" H 7935 2810 50  0000 C CNN
@@ -286,7 +256,7 @@ F 3 "" H 7935 2260 50  0000 C CNN
 	-1   0    0    1   
 $EndComp
 $Comp
-L CONN_01X10 P?
+L meteorito-rescue:CONN_01X10 P?
 U 1 1 5B3AD12E
 P 8780 2240
 F 0 "P?" H 8780 2790 50  0000 C CNN
@@ -316,8 +286,6 @@ Wire Wire Line
 	8135 2010 8460 2010
 Wire Wire Line
 	8135 2110 8470 2110
-Wire Notes Line
-	4315 515  4315 7755
 Wire Notes Line
 	4315 4065 11215 4065
 Wire Notes Line
@@ -363,7 +331,7 @@ Wire Wire Line
 Wire Wire Line
 	2125 5220 1975 5220
 Wire Wire Line
-	1900 6665 1900 6750
+	1900 6665 1900 6710
 Wire Wire Line
 	1900 6710 2115 6710
 Connection ~ 1900 6710
@@ -372,7 +340,7 @@ Wire Wire Line
 Wire Wire Line
 	1900 6950 1900 7050
 Wire Notes Line
-	4305 4260 11220 4260
+	4305 5460 11220 5460
 Wire Notes Line
 	11220 4260 11220 4250
 Wire Wire Line
@@ -399,10 +367,68 @@ Text Notes 1740 4660 0    60   ~ 0
 VELOCIDAD DEL AIRE
 Wire Notes Line
 	465  5740 4315 5740
-Wire Notes Line
-	4315 5740 4315 5755
 Text Notes 1915 5915 0    60   ~ 0
 NUBOSIDAD
 Text Label 8260 2315 0    60   ~ 0
 OUT
+Wire Wire Line
+	1900 6710 1900 6750
+Wire Notes Line
+	4315 515  4315 7755
+$Comp
+L meteorito-rescue:CONN_01X03 P?
+U 1 1 5B9C70A3
+P 5300 4750
+F 0 "P?" H 5300 4950 50  0000 C CNN
+F 1 "Hall" V 5400 4750 50  0000 C CNN
+F 2 "" H 5300 4750 50  0000 C CNN
+F 3 "" H 5300 4750 50  0000 C CNN
+	1    5300 4750
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 5B9C7410
+P 4900 5100
+F 0 "#PWR?" H 4900 4850 50  0001 C CNN
+F 1 "GND" H 4905 4927 50  0000 C CNN
+F 2 "" H 4900 5100 50  0001 C CNN
+F 3 "" H 4900 5100 50  0001 C CNN
+	1    4900 5100
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5100 4850 4900 4850
+Wire Wire Line
+	4900 4850 4900 5100
+$Comp
+L meteorito-rescue:CONN_01X03 P?
+U 1 1 5B9C7F56
+P 6500 4750
+F 0 "P?" H 6500 4950 50  0000 C CNN
+F 1 "Hall" V 6600 4750 50  0000 C CNN
+F 2 "" H 6500 4750 50  0000 C CNN
+F 3 "" H 6500 4750 50  0000 C CNN
+	1    6500 4750
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 5B9C7FC0
+P 6150 5150
+F 0 "#PWR?" H 6150 4900 50  0001 C CNN
+F 1 "GND" H 6155 4977 50  0000 C CNN
+F 2 "" H 6150 5150 50  0001 C CNN
+F 3 "" H 6150 5150 50  0001 C CNN
+	1    6150 5150
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6150 5150 6150 4850
+Wire Wire Line
+	6150 4850 6300 4850
+Text Notes 5300 4200 0    50   ~ 0
+Sensores Efecto Hall\n
+Wire Notes Line
+	7150 4050 7150 5450
 $EndSCHEMATC
