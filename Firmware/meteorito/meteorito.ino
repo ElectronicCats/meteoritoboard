@@ -319,7 +319,7 @@ static void envioDatosWiFi() {
 /*
  *Función de envio de datos via BLE
  */
-static void envidoDatosBLE(){
+static void envioDatosBLE(){
   
   //Temperatura
     uint8_t tempData[2];
