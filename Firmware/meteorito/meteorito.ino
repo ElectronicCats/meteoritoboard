@@ -1,6 +1,6 @@
 /*******************************************************
 Meteorito.ino
-Ejemplo de Estacion Meteorologica con ESP8266 
+Ejemplo de Estacion Meteorologica con ESP32 
 para redmet.org y Meteorito
 Andres Sabas @ The Inventor's House
 Brando Are @ Electronic Cats
