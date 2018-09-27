@@ -68,10 +68,10 @@ const byte pinRayosUV = 12;         //pin Analogico
 const byte pinNubosidad = 13;
 
 /*Variables Direccion de Viento*/
-int sumaVeleta=0;      
+int sumaVeleta=0, i=0;      
 const byte pinDireccion = 14;       //pin Analógico 
 int direccion = 0;
-const int tiempoEnvio=180;
+const int tiempoEnvio=30;
 
 //variables manejo de proceso precipitacion
 float precipitacion = 0;
@@ -182,8 +182,7 @@ String httpHeader = "POST /api/device/metrics HTTP/1.1\r\n"
 WiFiClient client;
 
 /*Funcion para obtener direccion del viento */
-/*
-int leerDireccion(){
+int leerDireccion(int suma){
   suma=suma/tiempoEnvio;
   if(suma>=415 && suma< 440) return 0;
   if(suma>=440 && suma< 490) return 45;
@@ -194,7 +193,7 @@ int leerDireccion(){
   if(suma>=590 && suma< 615) return 270;
   if(suma>=615 && suma< 620) return 315;
 }
-*/
+
 /*Funcion para obtener la luz ultravioleta*/
 int leerUV(){
   int uv =map(analogRead(pinRayosUV),0,4095,0,15);
@@ -278,7 +277,7 @@ static void envioDatosWiFi() {
   rain = String(random(0,250));
   temp = String(temperatura);
   indiceUV = String(leerUV());
-  windDirection = String(random(0,360));
+  windDirection = String(direccion);
   windSpeed = String(velocidad);
 
 //cargamos una cadena con los datos
@@ -424,6 +423,16 @@ void loop () {
   
   presion();
   
+  if(i<tiempoEnvio){
+    sumaVeleta+=analogRead(pinDireccion);
+    i++;
+  }
+  else{
+     direccion=leerDireccion(sumaVeleta);
+     sumaVeleta=0; 
+     i=0; 
+  }
+ 
   noInterrupts();
   envioDatosWiFi();
   envioDatosBLE();
@@ -440,6 +449,8 @@ void loop () {
   Serial.print("Velocidad del viento: "); 
   Serial.print(velocidad);
   Serial.println("  Km/h");
+  Serial.print("dirección: ");
+  Serial.println(direccion);
   delay(500);
 }
 
