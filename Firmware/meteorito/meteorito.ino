@@ -75,7 +75,7 @@ const int tiempoEnvio=30;
 
 //variables manejo de proceso precipitacion
 float precipitacion = 0;
-const byte pinPluviometro = 13;  //pin digital
+const byte pinPluviometro = 33;  //pin digital
 unsigned long tiempoAntesDos;
 unsigned long  tiempoDos=0;
 unsigned long sumaTiempoDos=0;
@@ -274,7 +274,7 @@ static void envioDatosWiFi() {
   clouds = String(nubosidad());
   humidity = String(humedad);
   pressure = String(event.pressure*0.1);
-  rain = String(random(0,250));
+  rain = String(precipitacion);
   temp = String(temperatura);
   indiceUV = String(leerUV());
   windDirection = String(direccion);
@@ -410,7 +410,7 @@ void setup () {
 
   //Iniciamos pluviometro
    pinMode(pinPluviometro, INPUT);
-   //attachInterrupt(digitalPinToInterrupt(pinPluviometro), interrupcionPrecipitacion,RISING );
+   attachInterrupt(digitalPinToInterrupt(pinPluviometro), interrupcionPrecipitacion,RISING );
    tiempoAntesDos=millis();
 }
 
@@ -451,6 +451,8 @@ void loop () {
   Serial.println("  Km/h");
   Serial.print("dirección: ");
   Serial.println(direccion);
+  Serial.print(precipitacion);
+  Serial.println(" mm/s");
   delay(500);
 }
 
