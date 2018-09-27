@@ -53,12 +53,13 @@ float temperatura;
 float humedad;
    
 /*Variables Anemometro*/
-const int pinAnemometro = 14;
+const int pinAnemometro = 25;
 unsigned long tiempoAntes;
 unsigned long  tiempo=0;
 unsigned long sumaTiempo=0;
 byte contador=0;
 bool bandera=0;
+float velocidad=0;
 
 /*Variables uv*/
 const byte pinRayosUV = 12;         //pin Analogico
@@ -278,7 +279,7 @@ static void envioDatosWiFi() {
   temp = String(temperatura);
   indiceUV = String(leerUV());
   windDirection = String(random(0,360));
-  windSpeed = String(random(0,360));
+  windSpeed = String(velocidad);
 
 //cargamos una cadena con los datos
   /*El formato es "{\"data\":{\"metrica\":valor}}"*/
@@ -405,7 +406,7 @@ void setup () {
 
   //Iniciamos anemometro
   pinMode(pinAnemometro, INPUT);
-  //attachInterrupt(digitalPinToInterrupt(pinAnemometro), interrupcionViento,RISING );
+  attachInterrupt(digitalPinToInterrupt(pinAnemometro), interrupcionViento,RISING );
   tiempoAntes=millis();
 
   //Iniciamos pluviometro
@@ -423,8 +424,10 @@ void loop () {
   
   presion();
   
+  noInterrupts();
   envioDatosWiFi();
   envioDatosBLE();
+  interrupts();
   
   Serial.println("");
   //Mostrar variables
@@ -434,8 +437,9 @@ void loop () {
   Serial.println(humedad);
   Serial.print("UV nivel luz: "); 
   Serial.println(leerUV());
-  Serial.print("Direccion del viento: "); 
-  //Serial.println(leerDireccion());
+  Serial.print("Velocidad del viento: "); 
+  Serial.print(velocidad);
+  Serial.println("  Km/h");
   delay(500);
 }
 
@@ -470,12 +474,12 @@ void interrupcionViento() {
       sumaTiempo+=tiempo; 
       if(contador<=19){
         contador++;
-        Serial.println(contador);
+        //Serial.println(contador);
       }else{
         contador=0;
-        float velocidad=(2*3.1416*0.05*3.6)/((sumaTiempo/1000.0)/20);
-        Serial.print(velocidad);
-        Serial.println("  Km/h");
+        velocidad=(2*3.1416*0.05*3.6)/((sumaTiempo/1000.0)/20);
+        //Serial.print(velocidad);
+        //Serial.println("  Km/h");
         sumaTiempo=0;
       }
     }
