@@ -5,7 +5,7 @@ para redmet.org y Meteorito
 Andres Sabas @ The Inventor's House
 Brando Are @ Electronic Cats
 Fecha Original de Creación: 28 de Octubre del 2017
-Ultima Actualizacion: 24 Julio 2018
+Ultima Actualizacion: 26 Septiembre 2018
 
 Este ejemplo demuestra la conexion y envio de datos 
 con un modulo ESP32 a la plataforma 
