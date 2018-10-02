@@ -36,24 +36,6 @@ F 3 "" H 2300 3875 50  0000 C CNN
 	1    2300 3875
 	1    0    0    -1  
 $EndComp
-Text Label 6910 2110 0    60   ~ 0
-D3
-Text Label 6910 2210 0    60   ~ 0
-SDA
-Text Label 6910 2310 0    60   ~ 0
-SCL
-Text Label 6915 2410 0    60   ~ 0
-RX
-Text Label 8460 2010 0    60   ~ 0
-D7
-Text Label 8470 2110 0    60   ~ 0
-D6
-Text Label 9015 3440 0    60   ~ 0
-D5
-Text Label 6915 2510 0    60   ~ 0
-TX
-Text Label 1850 1195 0    60   ~ 0
-D7
 $Comp
 L power:GND #PWR06
 U 1 1 59FBB4DC
@@ -76,21 +58,6 @@ F 3 "" H 2025 2250 50  0000 C CNN
 	1    2025 2250
 	1    0    0    -1  
 $EndComp
-Text Label 2025 2450 0    60   ~ 0
-SCL
-Text Label 2020 2550 0    60   ~ 0
-SDA
-$Comp
-L power:GND #PWR08
-U 1 1 59FBB69A
-P 1905 3880
-F 0 "#PWR08" H 1905 3630 50  0001 C CNN
-F 1 "GND" H 1905 3730 50  0000 C CNN
-F 2 "" H 1905 3880 50  0000 C CNN
-F 3 "" H 1905 3880 50  0000 C CNN
-	1    1905 3880
-	1    0    0    -1  
-$EndComp
 $Comp
 L power:+5V #PWR010
 U 1 1 59FBB879
@@ -106,28 +73,17 @@ NoConn ~ 2100 3775
 $Comp
 L power:+5V #PWR04
 U 1 1 59FBB39C
-P 1860 995
-F 0 "#PWR04" H 1860 845 50  0001 C CNN
-F 1 "+5V" H 1860 1135 50  0000 C CNN
-F 2 "" H 1860 995 50  0000 C CNN
-F 3 "" H 1860 995 50  0000 C CNN
-	1    1860 995 
+P 1860 945
+F 0 "#PWR04" H 1860 795 50  0001 C CNN
+F 1 "+5V" H 1860 1085 50  0000 C CNN
+F 2 "" H 1860 945 50  0000 C CNN
+F 3 "" H 1860 945 50  0000 C CNN
+	1    1860 945 
 	1    0    0    -1  
 $EndComp
-$Comp
-L power:GND #PWR05
-U 1 1 59FBB3BC
-P 1760 1095
-F 0 "#PWR05" H 1760 845 50  0001 C CNN
-F 1 "GND" H 1760 945 50  0000 C CNN
-F 2 "" H 1760 1095 50  0000 C CNN
-F 3 "" H 1760 1095 50  0000 C CNN
-	1    1760 1095
-	1    0    0    -1  
-$EndComp
-NoConn ~ 8135 2310
-NoConn ~ 8135 2410
-NoConn ~ 8135 2510
+NoConn ~ 8135 2220
+NoConn ~ 8135 2120
+NoConn ~ 8135 2020
 Text Notes 7290 790  0    60   ~ 0
 Wemos D1 ESP32
 $Comp
@@ -142,34 +98,10 @@ F 3 "" H 2275 1095 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L meteorito-rescue:CONN_01X03 P?
-U 1 1 5B3AB6AA
-P 2325 5120
-F 0 "P?" H 2325 5320 50  0000 C CNN
-F 1 "Hall" V 2425 5120 50  0000 C CNN
-F 2 "" H 2325 5120 50  0000 C CNN
-F 3 "" H 2325 5120 50  0000 C CNN
-	1    2325 5120
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:+5V #PWR?
-U 1 1 5B3ABCF3
-P 1760 4215
-F 0 "#PWR?" H 1760 4065 50  0001 C CNN
-F 1 "+5V" H 1760 4355 50  0000 C CNN
-F 2 "" H 1760 4215 50  0000 C CNN
-F 3 "" H 1760 4215 50  0000 C CNN
-	1    1760 4215
-	1    0    0    -1  
-$EndComp
-Text Label 1950 3975 0    60   ~ 0
-OUT
-$Comp
-L Device:R_Small R?
+L Device:R_Small R1
 U 1 1 5B3ABF7D
 P 1900 6565
-F 0 "R?" H 1930 6585 50  0000 L CNN
+F 0 "R1" H 1930 6585 50  0000 L CNN
 F 1 "FOTORESISTENCIA" H 1930 6525 50  0000 L CNN
 F 2 "" H 1900 6565 50  0000 C CNN
 F 3 "" H 1900 6565 50  0000 C CNN
@@ -177,10 +109,10 @@ F 3 "" H 1900 6565 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:R_Small R?
+L Device:R_Small R2
 U 1 1 5B3AC023
 P 1900 6850
-F 0 "R?" H 1930 6870 50  0000 L CNN
+F 0 "R2" H 1930 6870 50  0000 L CNN
 F 1 "100" H 1930 6810 50  0000 L CNN
 F 2 "" H 1900 6850 50  0000 C CNN
 F 3 "" H 1900 6850 50  0000 C CNN
@@ -188,23 +120,21 @@ F 3 "" H 1900 6850 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L power:GND #PWR?
+L power:GND #PWR08
 U 1 1 5B3AC2DB
 P 1900 7050
-F 0 "#PWR?" H 1900 6800 50  0001 C CNN
+F 0 "#PWR08" H 1900 6800 50  0001 C CNN
 F 1 "GND" H 1900 6900 50  0000 C CNN
 F 2 "" H 1900 7050 50  0000 C CNN
 F 3 "" H 1900 7050 50  0000 C CNN
 	1    1900 7050
 	1    0    0    -1  
 $EndComp
-Text Label 2115 6710 0    60   ~ 0
-D13
 $Comp
-L power:+3.3V #PWR?
+L power:+3.3V #PWR05
 U 1 1 5B3AC40A
 P 1900 6370
-F 0 "#PWR?" H 1900 6220 50  0001 C CNN
+F 0 "#PWR05" H 1900 6220 50  0001 C CNN
 F 1 "+3.3V" H 1900 6510 50  0000 C CNN
 F 2 "" H 1900 6370 50  0000 C CNN
 F 3 "" H 1900 6370 50  0000 C CNN
@@ -212,21 +142,10 @@ F 3 "" H 1900 6370 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L power:GND #PWR?
-U 1 1 5B3AC68F
-P 1975 5220
-F 0 "#PWR?" H 1975 4970 50  0001 C CNN
-F 1 "GND" H 1975 5070 50  0000 C CNN
-F 2 "" H 1975 5220 50  0000 C CNN
-F 3 "" H 1975 5220 50  0000 C CNN
-	1    1975 5220
-	1    0    0    -1  
-$EndComp
-$Comp
-L meteorito-rescue:CONN_01X10 P?
+L meteorito-rescue:CONN_01X10 P8
 U 1 1 5B3ACF92
 P 7335 2260
-F 0 "P?" H 7335 2810 50  0000 C CNN
+F 0 "P8" H 7335 2810 50  0000 C CNN
 F 1 "CONN_01X10" V 7435 2260 50  0000 C CNN
 F 2 "" H 7335 2260 50  0000 C CNN
 F 3 "" H 7335 2260 50  0000 C CNN
@@ -234,10 +153,10 @@ F 3 "" H 7335 2260 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L meteorito-rescue:CONN_01X10 P?
+L meteorito-rescue:CONN_01X10 P7
 U 1 1 5B3AD073
 P 6535 2265
-F 0 "P?" H 6535 2815 50  0000 C CNN
+F 0 "P7" H 6535 2815 50  0000 C CNN
 F 1 "CONN_01X10" V 6635 2265 50  0000 C CNN
 F 2 "" H 6535 2265 50  0000 C CNN
 F 3 "" H 6535 2265 50  0000 C CNN
@@ -245,26 +164,26 @@ F 3 "" H 6535 2265 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L meteorito-rescue:CONN_01X10 P?
+L meteorito-rescue:CONN_01X10 P9
 U 1 1 5B3AD0C5
-P 7935 2260
-F 0 "P?" H 7935 2810 50  0000 C CNN
-F 1 "CONN_01X10" V 8035 2260 50  0000 C CNN
-F 2 "" H 7935 2260 50  0000 C CNN
-F 3 "" H 7935 2260 50  0000 C CNN
-	1    7935 2260
-	-1   0    0    1   
+P 7935 2270
+F 0 "P9" H 7935 2820 50  0000 C CNN
+F 1 "CONN_01X10" V 8035 2270 50  0000 C CNN
+F 2 "" H 7935 2270 50  0000 C CNN
+F 3 "" H 7935 2270 50  0000 C CNN
+	1    7935 2270
+	-1   0    0    -1  
 $EndComp
 $Comp
-L meteorito-rescue:CONN_01X10 P?
+L meteorito-rescue:CONN_01X10 P10
 U 1 1 5B3AD12E
-P 8780 2240
-F 0 "P?" H 8780 2790 50  0000 C CNN
-F 1 "CONN_01X10" V 8880 2240 50  0000 C CNN
-F 2 "" H 8780 2240 50  0000 C CNN
-F 3 "" H 8780 2240 50  0000 C CNN
-	1    8780 2240
-	-1   0    0    1   
+P 8740 2285
+F 0 "P10" H 8740 2835 50  0000 C CNN
+F 1 "CONN_01X10" V 8840 2285 50  0000 C CNN
+F 2 "" H 8740 2285 50  0000 C CNN
+F 3 "" H 8740 2285 50  0000 C CNN
+	1    8740 2285
+	-1   0    0    -1  
 $EndComp
 Wire Wire Line
 	7135 1810 6900 1810
@@ -279,64 +198,25 @@ Wire Wire Line
 Wire Wire Line
 	7135 2510 6915 2510
 Wire Wire Line
-	8135 2210 8475 2210
+	8135 2320 8475 2320
 Wire Wire Line
-	8135 1810 8440 1810
+	8135 2720 8440 2720
 Wire Wire Line
-	8135 2010 8460 2010
+	8135 2520 8460 2520
 Wire Wire Line
-	8135 2110 8470 2110
+	8135 2420 8470 2420
 Wire Notes Line
 	4315 4065 11215 4065
 Wire Notes Line
 	11215 4065 11215 4075
 Wire Wire Line
-	1760 1095 2075 1095
-Wire Wire Line
-	2075 1195 1850 1195
-Wire Wire Line
 	2170 2250 2025 2250
 Wire Wire Line
 	1875 2350 2170 2350
 Wire Wire Line
-	2170 2450 2025 2450
-Wire Wire Line
-	2170 2550 2020 2550
-Wire Wire Line
 	2100 3675 1960 3675
 Wire Wire Line
-	1905 3875 2100 3875
-Wire Wire Line
-	2100 3975 1950 3975
-Wire Wire Line
-	2100 4075 1950 4075
-Wire Wire Line
-	6800 1910 6800 1920
-Wire Wire Line
-	6800 1910 7135 1910
-Wire Wire Line
 	1875 2350 1875 2355
-Wire Wire Line
-	1760 4215 1950 4215
-Wire Wire Line
-	1950 4215 1950 4075
-Wire Wire Line
-	1905 3875 1905 3880
-Wire Wire Line
-	2075 995  1860 995 
-Wire Wire Line
-	2125 5020 1975 5020
-Wire Wire Line
-	2125 5120 1980 5120
-Wire Wire Line
-	2125 5220 1975 5220
-Wire Wire Line
-	1900 6665 1900 6710
-Wire Wire Line
-	1900 6710 2115 6710
-Connection ~ 1900 6710
-Wire Wire Line
-	1900 6465 1900 6370
 Wire Wire Line
 	1900 6950 1900 7050
 Wire Notes Line
@@ -369,17 +249,13 @@ Wire Notes Line
 	465  5740 4315 5740
 Text Notes 1915 5915 0    60   ~ 0
 NUBOSIDAD
-Text Label 8260 2315 0    60   ~ 0
-OUT
-Wire Wire Line
-	1900 6710 1900 6750
 Wire Notes Line
 	4315 515  4315 7755
 $Comp
-L meteorito-rescue:CONN_01X03 P?
+L meteorito-rescue:CONN_01X03 P5
 U 1 1 5B9C70A3
 P 5300 4750
-F 0 "P?" H 5300 4950 50  0000 C CNN
+F 0 "P5" H 5300 4950 50  0000 C CNN
 F 1 "Hall" V 5400 4750 50  0000 C CNN
 F 2 "" H 5300 4750 50  0000 C CNN
 F 3 "" H 5300 4750 50  0000 C CNN
@@ -387,48 +263,357 @@ F 3 "" H 5300 4750 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L power:GND #PWR?
-U 1 1 5B9C7410
-P 4900 5100
-F 0 "#PWR?" H 4900 4850 50  0001 C CNN
-F 1 "GND" H 4905 4927 50  0000 C CNN
-F 2 "" H 4900 5100 50  0001 C CNN
-F 3 "" H 4900 5100 50  0001 C CNN
-	1    4900 5100
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	5100 4850 4900 4850
-Wire Wire Line
-	4900 4850 4900 5100
-$Comp
-L meteorito-rescue:CONN_01X03 P?
+L meteorito-rescue:CONN_01X03 P6
 U 1 1 5B9C7F56
 P 6500 4750
-F 0 "P?" H 6500 4950 50  0000 C CNN
+F 0 "P6" H 6500 4950 50  0000 C CNN
 F 1 "Hall" V 6600 4750 50  0000 C CNN
 F 2 "" H 6500 4750 50  0000 C CNN
 F 3 "" H 6500 4750 50  0000 C CNN
 	1    6500 4750
 	1    0    0    -1  
 $EndComp
-$Comp
-L power:GND #PWR?
-U 1 1 5B9C7FC0
-P 6150 5150
-F 0 "#PWR?" H 6150 4900 50  0001 C CNN
-F 1 "GND" H 6155 4977 50  0000 C CNN
-F 2 "" H 6150 5150 50  0001 C CNN
-F 3 "" H 6150 5150 50  0001 C CNN
-	1    6150 5150
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	6150 5150 6150 4850
-Wire Wire Line
-	6150 4850 6300 4850
 Text Notes 5300 4200 0    50   ~ 0
 Sensores Efecto Hall\n
 Wire Notes Line
 	7150 4050 7150 5450
+$Comp
+L power:+5V #PWR02
+U 1 1 5BA1D500
+P 1750 5000
+F 0 "#PWR02" H 1750 4850 50  0001 C CNN
+F 1 "+5V" H 1765 5173 50  0000 C CNN
+F 2 "" H 1750 5000 50  0001 C CNN
+F 3 "" H 1750 5000 50  0001 C CNN
+	1    1750 5000
+	1    0    0    -1  
+$EndComp
+$Comp
+L meteorito-rescue:CONN_01X03 P4
+U 1 1 5BA1EA80
+P 2200 5200
+F 0 "P4" H 2200 5400 50  0000 C CNN
+F 1 "Hall" V 2300 5200 50  0000 C CNN
+F 2 "" H 2200 5200 50  0000 C CNN
+F 3 "" H 2200 5200 50  0000 C CNN
+	1    2200 5200
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR03
+U 1 1 5BA20EB7
+P 1890 4970
+F 0 "#PWR03" H 1890 4720 50  0001 C CNN
+F 1 "GND" H 1895 4797 50  0000 C CNN
+F 2 "" H 1890 4970 50  0001 C CNN
+F 3 "" H 1890 4970 50  0001 C CNN
+	1    1890 4970
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6335 1815 6065 1815
+Wire Wire Line
+	8940 2735 9300 2735
+Wire Wire Line
+	6335 2015 6065 2015
+Wire Wire Line
+	6335 2115 6065 2115
+Wire Wire Line
+	6065 2215 6335 2215
+Wire Wire Line
+	6335 2315 6065 2315
+Wire Wire Line
+	6335 2415 6065 2415
+Wire Wire Line
+	6335 2515 6085 2515
+Wire Wire Line
+	6335 2615 6085 2615
+Wire Wire Line
+	8135 2620 8440 2620
+Wire Wire Line
+	8135 1920 8470 1920
+Wire Wire Line
+	8135 1820 8470 1820
+Wire Wire Line
+	8940 2635 9300 2635
+Wire Wire Line
+	8940 2535 9300 2535
+Wire Wire Line
+	8940 2435 9300 2435
+Wire Wire Line
+	8940 2335 9295 2335
+Wire Wire Line
+	8940 2235 9300 2235
+Wire Wire Line
+	8940 2135 9285 2135
+Wire Wire Line
+	8940 2035 9280 2035
+Wire Wire Line
+	8940 1935 9280 1935
+Wire Wire Line
+	8940 1835 9280 1835
+$Comp
+L power:GND #PWR09
+U 1 1 5BA50CA8
+P 1910 3930
+F 0 "#PWR09" H 1910 3680 50  0001 C CNN
+F 1 "GND" H 1915 3757 50  0000 C CNN
+F 2 "" H 1910 3930 50  0001 C CNN
+F 3 "" H 1910 3930 50  0001 C CNN
+	1    1910 3930
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1910 3930 1910 3875
+Wire Wire Line
+	1910 3875 2100 3875
+$Comp
+L power:+5V #PWR01
+U 1 1 5BA55AD4
+P 1695 4055
+F 0 "#PWR01" H 1695 3905 50  0001 C CNN
+F 1 "+5V" H 1710 4228 50  0000 C CNN
+F 2 "" H 1695 4055 50  0001 C CNN
+F 3 "" H 1695 4055 50  0001 C CNN
+	1    1695 4055
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2100 4075 2045 4075
+Wire Wire Line
+	2045 4075 2045 4180
+Wire Wire Line
+	2045 4180 1695 4180
+Wire Wire Line
+	1695 4180 1695 4055
+Wire Wire Line
+	2000 5100 1985 5100
+Wire Wire Line
+	1985 5100 1985 4930
+Wire Wire Line
+	1985 4930 1890 4930
+Wire Wire Line
+	1890 4930 1890 4970
+Wire Wire Line
+	5100 4650 5055 4650
+$Comp
+L power:+5V #PWR012
+U 1 1 5BA6A95E
+P 4750 4730
+F 0 "#PWR012" H 4750 4580 50  0001 C CNN
+F 1 "+5V" H 4765 4903 50  0000 C CNN
+F 2 "" H 4750 4730 50  0001 C CNN
+F 3 "" H 4750 4730 50  0001 C CNN
+	1    4750 4730
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5100 4750 4750 4750
+Wire Wire Line
+	4750 4750 4750 4730
+$Comp
+L power:GND #PWR013
+U 1 1 5BA7E477
+P 4915 4530
+F 0 "#PWR013" H 4915 4280 50  0001 C CNN
+F 1 "GND" H 4920 4357 50  0000 C CNN
+F 2 "" H 4915 4530 50  0001 C CNN
+F 3 "" H 4915 4530 50  0001 C CNN
+	1    4915 4530
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4915 4530 4915 4450
+Wire Wire Line
+	5055 4450 5055 4650
+Wire Wire Line
+	4915 4450 5055 4450
+Wire Wire Line
+	5100 4850 4905 4850
+$Comp
+L power:GND #PWR015
+U 1 1 5BA82D62
+P 6115 4535
+F 0 "#PWR015" H 6115 4285 50  0001 C CNN
+F 1 "GND" H 6120 4362 50  0000 C CNN
+F 2 "" H 6115 4535 50  0001 C CNN
+F 3 "" H 6115 4535 50  0001 C CNN
+	1    6115 4535
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6070 4850 6300 4850
+Wire Wire Line
+	6300 4650 6300 4500
+Wire Wire Line
+	6300 4500 6115 4500
+Wire Wire Line
+	6115 4500 6115 4535
+$Comp
+L power:+5V #PWR014
+U 1 1 5BA8782A
+P 5940 4655
+F 0 "#PWR014" H 5940 4505 50  0001 C CNN
+F 1 "+5V" H 5955 4828 50  0000 C CNN
+F 2 "" H 5940 4655 50  0001 C CNN
+F 3 "" H 5940 4655 50  0001 C CNN
+	1    5940 4655
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6300 4750 5940 4750
+Wire Wire Line
+	5940 4750 5940 4655
+Wire Wire Line
+	2075 1095 1860 1095
+Text Label 6065 1815 0    50   ~ 0
+GND
+Text Label 6065 1915 0    50   ~ 0
+IO27
+Text Label 6065 2015 0    50   ~ 0
+IO25
+Text Label 6065 2115 0    50   ~ 0
+IO32
+Text Label 6065 2215 0    50   ~ 0
+TDI
+Text Label 6065 2315 0    50   ~ 0
+IO4
+Text Label 6065 2415 0    50   ~ 0
+IO0
+Text Label 6085 2515 0    50   ~ 0
+IO2
+Text Label 6085 2615 0    50   ~ 0
+SD1
+Text Label 6085 2715 0    50   ~ 0
+CLK
+Wire Wire Line
+	6335 2715 6085 2715
+Text Label 6900 1810 0    50   ~ 0
+TXD
+Text Label 6900 1910 0    50   ~ 0
+RXD
+Text Label 6910 2210 0    50   ~ 0
+IO17
+Text Label 6910 2310 0    50   ~ 0
+IO16
+Text Label 6915 2410 0    50   ~ 0
+GND
+Text Label 6915 2510 0    50   ~ 0
+VCC
+Text Label 6930 2610 0    50   ~ 0
+TD0
+Text Label 6930 2710 0    50   ~ 0
+SD0
+Text Label 8470 1820 2    50   ~ 0
+RST
+Text Label 8470 1920 2    50   ~ 0
+SVP
+Text Label 8470 2420 2    50   ~ 0
+IO5
+Text Label 8460 2520 2    50   ~ 0
+3.3V
+Text Label 8440 2620 2    50   ~ 0
+TCK
+Text Label 8440 2720 2    50   ~ 0
+SD3
+Text Label 9280 1835 2    50   ~ 0
+GND
+Text Label 9280 1935 2    50   ~ 0
+NC
+Text Label 9280 2035 2    50   ~ 0
+SVN
+Text Label 9285 2135 2    50   ~ 0
+IO35
+Text Label 9300 2235 2    50   ~ 0
+IO33
+Text Label 9295 2335 2    50   ~ 0
+IO34
+Text Label 9300 2435 2    50   ~ 0
+TMS
+Text Label 9300 2535 2    50   ~ 0
+NC
+Text Label 9300 2635 2    50   ~ 0
+SD2
+Text Label 9300 2735 2    50   ~ 0
+CMD
+Text Label 1860 1095 0    50   ~ 0
+IO23
+Text Label 4905 4850 0    50   ~ 0
+SIG
+Text Label 6105 4850 0    50   ~ 0
+SIG
+Wire Wire Line
+	2075 995  1860 995 
+Wire Wire Line
+	1860 995  1860 945 
+Wire Wire Line
+	2170 2450 2010 2450
+Text Label 2010 2450 0    50   ~ 0
+IO22
+Text Label 2010 2550 0    50   ~ 0
+IO21
+Wire Wire Line
+	2170 2550 2010 2550
+Wire Wire Line
+	2100 3975 1980 3975
+Text Label 1980 3975 0    50   ~ 0
+IO12
+Wire Wire Line
+	1750 5000 1750 5200
+Wire Wire Line
+	1750 5200 2000 5200
+Wire Wire Line
+	2000 5300 1750 5300
+Text Label 1750 5300 2    50   ~ 0
+IO25
+Wire Wire Line
+	1900 6750 1900 6710
+Wire Wire Line
+	1900 6710 2175 6710
+Connection ~ 1900 6710
+Wire Wire Line
+	1900 6710 1900 6665
+Wire Wire Line
+	1900 6465 1900 6370
+$Comp
+L power:GND #PWR0101
+U 1 1 5BAA240F
+P 1855 1220
+F 0 "#PWR0101" H 1855 970 50  0001 C CNN
+F 1 "GND" H 1860 1047 50  0000 C CNN
+F 2 "" H 1855 1220 50  0001 C CNN
+F 3 "" H 1855 1220 50  0001 C CNN
+	1    1855 1220
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1855 1220 1855 1195
+Wire Wire Line
+	1855 1195 2075 1195
+Wire Wire Line
+	6335 1915 6065 1915
+Wire Wire Line
+	7135 1910 6900 1910
+Wire Wire Line
+	7135 2010 6900 2010
+Wire Wire Line
+	8135 2120 8465 2120
+Wire Wire Line
+	8135 2220 8465 2220
+Text Label 8465 2120 2    50   ~ 0
+IO18
+Text Label 8465 2220 2    50   ~ 0
+IO19
+Wire Wire Line
+	8135 2020 8465 2020
+Text Label 8465 2020 2    50   ~ 0
+IO26
+Text Label 6910 2110 0    50   ~ 0
+IO21
+Text Label 6900 2010 0    50   ~ 0
+IO22
+Text Label 8475 2320 2    50   ~ 0
+IO23
+Text Label 2175 6710 0    50   ~ 0
+IO13
 $EndSCHEMATC
