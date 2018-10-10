@@ -20,7 +20,7 @@ U 1 1 5973B1FD
 P 2370 2400
 F 0 "P3" H 2370 2650 50  0000 C CNN
 F 1 "BMP180" V 2470 2400 50  0000 C CNN
-F 2 "Pin_Headers:Pin_Header_Straight_1x04_Pitch2.54mm" H 2370 2400 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical" H 2370 2400 50  0001 C CNN
 F 3 "" H 2370 2400 50  0000 C CNN
 	1    2370 2400
 	1    0    0    -1  
@@ -31,7 +31,7 @@ U 1 1 5973BC79
 P 2300 3875
 F 0 "P2" H 2300 4175 50  0000 C CNN
 F 1 "GY-ML8511" V 2400 3875 50  0000 C CNN
-F 2 "Pin_Headers:Pin_Header_Straight_1x05_Pitch2.54mm" H 2300 3875 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x05_P2.54mm_Vertical" H 2300 3875 50  0001 C CNN
 F 3 "" H 2300 3875 50  0000 C CNN
 	1    2300 3875
 	1    0    0    -1  
@@ -70,17 +70,6 @@ F 3 "" H 1960 3675 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 NoConn ~ 2100 3775
-$Comp
-L power:+5V #PWR04
-U 1 1 59FBB39C
-P 1860 945
-F 0 "#PWR04" H 1860 795 50  0001 C CNN
-F 1 "+5V" H 1860 1085 50  0000 C CNN
-F 2 "" H 1860 945 50  0000 C CNN
-F 3 "" H 1860 945 50  0000 C CNN
-	1    1860 945 
-	1    0    0    -1  
-$EndComp
 NoConn ~ 8135 2220
 NoConn ~ 8135 2120
 NoConn ~ 8135 2020
@@ -89,12 +78,12 @@ Wemos D1 ESP32
 $Comp
 L meteorito-rescue:CONN_01X03 P1
 U 1 1 5973B1A0
-P 2275 1095
-F 0 "P1" H 2275 1295 50  0000 C CNN
-F 1 "DH22" V 2375 1095 50  0000 C CNN
-F 2 "Pin_Headers:Pin_Header_Straight_1x03_Pitch2.54mm" H 2275 1095 50  0001 C CNN
-F 3 "" H 2275 1095 50  0000 C CNN
-	1    2275 1095
+P 2260 1025
+F 0 "P1" H 2260 1225 50  0000 C CNN
+F 1 "DH22" V 2360 1025 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P5.08mm_Horizontal" H 2260 1025 50  0001 C CNN
+F 3 "" H 2260 1025 50  0000 C CNN
+	1    2260 1025
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -103,7 +92,7 @@ U 1 1 5B3ABF7D
 P 1900 6565
 F 0 "R1" H 1930 6585 50  0000 L CNN
 F 1 "FOTORESISTENCIA" H 1930 6525 50  0000 L CNN
-F 2 "" H 1900 6565 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P2.54mm_Vertical" H 1900 6565 50  0001 C CNN
 F 3 "" H 1900 6565 50  0000 C CNN
 	1    1900 6565
 	1    0    0    -1  
@@ -114,7 +103,7 @@ U 1 1 5B3AC023
 P 1900 6850
 F 0 "R2" H 1930 6870 50  0000 L CNN
 F 1 "100" H 1930 6810 50  0000 L CNN
-F 2 "" H 1900 6850 50  0000 C CNN
+F 2 "Resistor_THT:R_Axial_DIN0204_L3.6mm_D1.6mm_P7.62mm_Horizontal" H 1900 6850 50  0001 C CNN
 F 3 "" H 1900 6850 50  0000 C CNN
 	1    1900 6850
 	1    0    0    -1  
@@ -147,7 +136,7 @@ U 1 1 5B3ACF92
 P 7335 2260
 F 0 "P8" H 7335 2810 50  0000 C CNN
 F 1 "CONN_01X10" V 7435 2260 50  0000 C CNN
-F 2 "" H 7335 2260 50  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x10_P2.54mm_Vertical" H 7335 2260 50  0001 C CNN
 F 3 "" H 7335 2260 50  0000 C CNN
 	1    7335 2260
 	1    0    0    -1  
@@ -158,7 +147,7 @@ U 1 1 5B3AD073
 P 6535 2265
 F 0 "P7" H 6535 2815 50  0000 C CNN
 F 1 "CONN_01X10" V 6635 2265 50  0000 C CNN
-F 2 "" H 6535 2265 50  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x10_P2.54mm_Vertical" H 6535 2265 50  0001 C CNN
 F 3 "" H 6535 2265 50  0000 C CNN
 	1    6535 2265
 	1    0    0    -1  
@@ -169,7 +158,7 @@ U 1 1 5B3AD0C5
 P 7935 2270
 F 0 "P9" H 7935 2820 50  0000 C CNN
 F 1 "CONN_01X10" V 8035 2270 50  0000 C CNN
-F 2 "" H 7935 2270 50  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x10_P2.54mm_Vertical" H 7935 2270 50  0001 C CNN
 F 3 "" H 7935 2270 50  0000 C CNN
 	1    7935 2270
 	-1   0    0    -1  
@@ -180,7 +169,7 @@ U 1 1 5B3AD12E
 P 8740 2285
 F 0 "P10" H 8740 2835 50  0000 C CNN
 F 1 "CONN_01X10" V 8840 2285 50  0000 C CNN
-F 2 "" H 8740 2285 50  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x10_P2.54mm_Vertical" H 8740 2285 50  0001 C CNN
 F 3 "" H 8740 2285 50  0000 C CNN
 	1    8740 2285
 	-1   0    0    -1  
@@ -220,8 +209,6 @@ Wire Wire Line
 Wire Wire Line
 	1900 6950 1900 7050
 Wire Notes Line
-	4305 5460 11220 5460
-Wire Notes Line
 	11220 4260 11220 4250
 Wire Wire Line
 	7135 2610 6930 2610
@@ -257,7 +244,7 @@ U 1 1 5B9C70A3
 P 5300 4750
 F 0 "P5" H 5300 4950 50  0000 C CNN
 F 1 "Hall" V 5400 4750 50  0000 C CNN
-F 2 "" H 5300 4750 50  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 5300 4750 50  0001 C CNN
 F 3 "" H 5300 4750 50  0000 C CNN
 	1    5300 4750
 	1    0    0    -1  
@@ -268,13 +255,13 @@ U 1 1 5B9C7F56
 P 6500 4750
 F 0 "P6" H 6500 4950 50  0000 C CNN
 F 1 "Hall" V 6600 4750 50  0000 C CNN
-F 2 "" H 6500 4750 50  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 6500 4750 50  0001 C CNN
 F 3 "" H 6500 4750 50  0000 C CNN
 	1    6500 4750
 	1    0    0    -1  
 $EndComp
 Text Notes 5300 4200 0    50   ~ 0
-Sensores Efecto Hall\n
+\n\n
 Wire Notes Line
 	7150 4050 7150 5450
 $Comp
@@ -294,7 +281,7 @@ U 1 1 5BA1EA80
 P 2200 5200
 F 0 "P4" H 2200 5400 50  0000 C CNN
 F 1 "Hall" V 2300 5200 50  0000 C CNN
-F 2 "" H 2200 5200 50  0000 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x03_P2.54mm_Vertical" H 2200 5200 50  0001 C CNN
 F 3 "" H 2200 5200 50  0000 C CNN
 	1    2200 5200
 	1    0    0    -1  
@@ -322,8 +309,6 @@ Wire Wire Line
 	6065 2215 6335 2215
 Wire Wire Line
 	6335 2315 6065 2315
-Wire Wire Line
-	6335 2415 6065 2415
 Wire Wire Line
 	6335 2515 6085 2515
 Wire Wire Line
@@ -464,8 +449,6 @@ Wire Wire Line
 	6300 4750 5940 4750
 Wire Wire Line
 	5940 4750 5940 4655
-Wire Wire Line
-	2075 1095 1860 1095
 Text Label 6065 1815 0    50   ~ 0
 GND
 Text Label 6065 1915 0    50   ~ 0
@@ -478,8 +461,6 @@ Text Label 6065 2215 0    50   ~ 0
 TDI
 Text Label 6065 2315 0    50   ~ 0
 IO4
-Text Label 6065 2415 0    50   ~ 0
-IO0
 Text Label 6085 2515 0    50   ~ 0
 IO2
 Text Label 6085 2615 0    50   ~ 0
@@ -536,16 +517,12 @@ Text Label 9300 2635 2    50   ~ 0
 SD2
 Text Label 9300 2735 2    50   ~ 0
 CMD
-Text Label 1860 1095 0    50   ~ 0
-IO23
 Text Label 4905 4850 0    50   ~ 0
-SIG
-Text Label 6105 4850 0    50   ~ 0
-SIG
+IO17
+Text Label 6070 4850 0    50   ~ 0
+IO16
 Wire Wire Line
-	2075 995  1860 995 
-Wire Wire Line
-	1860 995  1860 945 
+	2060 925  1845 925 
 Wire Wire Line
 	2170 2450 2010 2450
 Text Label 2010 2450 0    50   ~ 0
@@ -554,10 +531,8 @@ Text Label 2010 2550 0    50   ~ 0
 IO21
 Wire Wire Line
 	2170 2550 2010 2550
-Wire Wire Line
-	2100 3975 1980 3975
-Text Label 1980 3975 0    50   ~ 0
-IO12
+Text Label 2085 3975 2    50   ~ 0
+IO27
 Wire Wire Line
 	1750 5000 1750 5200
 Wire Wire Line
@@ -573,41 +548,25 @@ Wire Wire Line
 Connection ~ 1900 6710
 Wire Wire Line
 	1900 6710 1900 6665
-Wire Wire Line
-	1900 6465 1900 6370
 $Comp
 L power:GND #PWR0101
 U 1 1 5BAA240F
-P 1855 1220
-F 0 "#PWR0101" H 1855 970 50  0001 C CNN
-F 1 "GND" H 1860 1047 50  0000 C CNN
-F 2 "" H 1855 1220 50  0001 C CNN
-F 3 "" H 1855 1220 50  0001 C CNN
-	1    1855 1220
+P 1840 1150
+F 0 "#PWR0101" H 1840 900 50  0001 C CNN
+F 1 "GND" H 1845 977 50  0000 C CNN
+F 2 "" H 1840 1150 50  0001 C CNN
+F 3 "" H 1840 1150 50  0001 C CNN
+	1    1840 1150
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	1855 1220 1855 1195
+	1840 1150 1840 1125
 Wire Wire Line
-	1855 1195 2075 1195
-Wire Wire Line
-	6335 1915 6065 1915
+	1840 1125 2060 1125
 Wire Wire Line
 	7135 1910 6900 1910
 Wire Wire Line
 	7135 2010 6900 2010
-Wire Wire Line
-	8135 2120 8465 2120
-Wire Wire Line
-	8135 2220 8465 2220
-Text Label 8465 2120 2    50   ~ 0
-IO18
-Text Label 8465 2220 2    50   ~ 0
-IO19
-Wire Wire Line
-	8135 2020 8465 2020
-Text Label 8465 2020 2    50   ~ 0
-IO26
 Text Label 6910 2110 0    50   ~ 0
 IO21
 Text Label 6900 2010 0    50   ~ 0
@@ -616,4 +575,60 @@ Text Label 8475 2320 2    50   ~ 0
 IO23
 Text Label 2175 6710 0    50   ~ 0
 IO13
+$Comp
+L power:+5V #PWR0102
+U 1 1 5BB55C40
+P 1695 970
+F 0 "#PWR0102" H 1695 820 50  0001 C CNN
+F 1 "+5V" H 1695 1110 50  0000 C CNN
+F 2 "" H 1695 970 50  0000 C CNN
+F 3 "" H 1695 970 50  0000 C CNN
+	1    1695 970 
+	1    0    0    -1  
+$EndComp
+Text Label 1845 925  0    50   ~ 0
+IO23
+Wire Wire Line
+	2060 1025 1695 1025
+Wire Wire Line
+	1695 1025 1695 970 
+Wire Notes Line
+	5650 4065 5650 5460
+Wire Notes Line
+	4305 5460 11220 5460
+Text Notes 4605 4210 0    50   ~ 0
+Sensor De Precipitación \n
+Text Notes 5945 4205 0    50   ~ 0
+Sensor De Orientación \n
+NoConn ~ 6335 2115
+NoConn ~ 6335 2215
+NoConn ~ 6335 2315
+NoConn ~ 6335 2415
+NoConn ~ 6335 2515
+NoConn ~ 6335 2615
+NoConn ~ 6335 2715
+NoConn ~ 7135 2510
+NoConn ~ 7135 2610
+NoConn ~ 7135 2710
+NoConn ~ 7135 1810
+NoConn ~ 7135 1910
+NoConn ~ 8135 1820
+NoConn ~ 8135 1920
+NoConn ~ 8135 2420
+NoConn ~ 8135 2520
+NoConn ~ 8135 2620
+NoConn ~ 8135 2720
+NoConn ~ 8940 2035
+NoConn ~ 8940 2135
+NoConn ~ 8940 2235
+NoConn ~ 8940 2335
+NoConn ~ 8940 2435
+NoConn ~ 8940 2635
+NoConn ~ 8940 2735
+Wire Wire Line
+	1900 6370 1900 6465
+Wire Wire Line
+	2100 3975 2085 3975
+Wire Wire Line
+	6335 1915 6065 1915
 $EndSCHEMATC
