@@ -314,8 +314,6 @@ Wire Wire Line
 Wire Wire Line
 	8940 2635 9300 2635
 Wire Wire Line
-	8940 2535 9300 2535
-Wire Wire Line
 	8940 2435 9300 2435
 Wire Wire Line
 	8940 2335 9295 2335
@@ -325,8 +323,6 @@ Wire Wire Line
 	8940 2135 9285 2135
 Wire Wire Line
 	8940 2035 9280 2035
-Wire Wire Line
-	8940 1935 9280 1935
 $Comp
 L power:GND #PWR09
 U 1 1 5BA50CA8
@@ -477,8 +473,6 @@ Text Label 8470 2420 2    50   ~ 0
 IO5
 Text Label 8440 2720 2    50   ~ 0
 SD3
-Text Label 9280 1935 2    50   ~ 0
-NC
 Text Label 9280 2035 2    50   ~ 0
 SVN
 Text Label 9285 2135 2    50   ~ 0
@@ -489,8 +483,6 @@ Text Label 9295 2335 2    50   ~ 0
 IO34
 Text Label 9300 2435 2    50   ~ 0
 TMS
-Text Label 9300 2535 2    50   ~ 0
-NC
 Text Label 9300 2635 2    50   ~ 0
 SD2
 Text Label 9300 2735 2    50   ~ 0
@@ -683,4 +675,6 @@ Wire Wire Line
 	8135 2520 8535 2520
 Text Label 8440 2620 2    50   ~ 0
 IO13
+NoConn ~ 8940 1935
+NoConn ~ 8940 2535
 $EndSCHEMATC
