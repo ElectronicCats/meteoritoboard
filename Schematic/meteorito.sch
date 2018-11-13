@@ -183,15 +183,9 @@ Wire Wire Line
 Wire Wire Line
 	7135 2310 6910 2310
 Wire Wire Line
-	7135 2410 6915 2410
-Wire Wire Line
-	7135 2510 6915 2510
-Wire Wire Line
 	8135 2320 8475 2320
 Wire Wire Line
 	8135 2720 8440 2720
-Wire Wire Line
-	8135 2520 8460 2520
 Wire Wire Line
 	8135 2420 8470 2420
 Wire Notes Line
@@ -298,8 +292,6 @@ F 3 "" H 1890 4970 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	6335 1815 6065 1815
-Wire Wire Line
 	8940 2735 9300 2735
 Wire Wire Line
 	6335 2015 6065 2015
@@ -335,8 +327,6 @@ Wire Wire Line
 	8940 2035 9280 2035
 Wire Wire Line
 	8940 1935 9280 1935
-Wire Wire Line
-	8940 1835 9280 1835
 $Comp
 L power:GND #PWR09
 U 1 1 5BA50CA8
@@ -449,8 +439,6 @@ Wire Wire Line
 	6300 4750 5940 4750
 Wire Wire Line
 	5940 4750 5940 4655
-Text Label 6065 1815 0    50   ~ 0
-GND
 Text Label 6065 1915 0    50   ~ 0
 IO27
 Text Label 6065 2015 0    50   ~ 0
@@ -477,10 +465,6 @@ Text Label 6910 2210 0    50   ~ 0
 IO17
 Text Label 6910 2310 0    50   ~ 0
 IO16
-Text Label 6915 2410 0    50   ~ 0
-GND
-Text Label 6915 2510 0    50   ~ 0
-VCC
 Text Label 6930 2610 0    50   ~ 0
 TD0
 Text Label 6930 2710 0    50   ~ 0
@@ -491,14 +475,8 @@ Text Label 8470 1920 2    50   ~ 0
 SVP
 Text Label 8470 2420 2    50   ~ 0
 IO5
-Text Label 8460 2520 2    50   ~ 0
-3.3V
-Text Label 8440 2620 2    50   ~ 0
-TCK
 Text Label 8440 2720 2    50   ~ 0
 SD3
-Text Label 9280 1835 2    50   ~ 0
-GND
 Text Label 9280 1935 2    50   ~ 0
 NC
 Text Label 9280 2035 2    50   ~ 0
@@ -607,7 +585,6 @@ NoConn ~ 6335 2415
 NoConn ~ 6335 2515
 NoConn ~ 6335 2615
 NoConn ~ 6335 2715
-NoConn ~ 7135 2510
 NoConn ~ 7135 2610
 NoConn ~ 7135 2710
 NoConn ~ 7135 1810
@@ -615,8 +592,6 @@ NoConn ~ 7135 1910
 NoConn ~ 8135 1820
 NoConn ~ 8135 1920
 NoConn ~ 8135 2420
-NoConn ~ 8135 2520
-NoConn ~ 8135 2620
 NoConn ~ 8135 2720
 NoConn ~ 8940 2035
 NoConn ~ 8940 2135
@@ -631,4 +606,81 @@ Wire Wire Line
 	2100 3975 2085 3975
 Wire Wire Line
 	6335 1915 6065 1915
+$Comp
+L power:GND #PWR0103
+U 1 1 5BEA53DD
+P 9410 1855
+F 0 "#PWR0103" H 9410 1605 50  0001 C CNN
+F 1 "GND" H 9415 1682 50  0000 C CNN
+F 2 "" H 9410 1855 50  0001 C CNN
+F 3 "" H 9410 1855 50  0001 C CNN
+	1    9410 1855
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR0104
+U 1 1 5BEA5417
+P 5920 1855
+F 0 "#PWR0104" H 5920 1605 50  0001 C CNN
+F 1 "GND" H 5925 1682 50  0000 C CNN
+F 2 "" H 5920 1855 50  0001 C CNN
+F 3 "" H 5920 1855 50  0001 C CNN
+	1    5920 1855
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5920 1855 5920 1815
+Wire Wire Line
+	5920 1815 6335 1815
+Wire Wire Line
+	9410 1855 9410 1835
+Wire Wire Line
+	8940 1835 9410 1835
+$Comp
+L power:GND #PWR0105
+U 1 1 5BEAA495
+P 6795 2435
+F 0 "#PWR0105" H 6795 2185 50  0001 C CNN
+F 1 "GND" H 6800 2262 50  0000 C CNN
+F 2 "" H 6795 2435 50  0001 C CNN
+F 3 "" H 6795 2435 50  0001 C CNN
+	1    6795 2435
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6795 2435 6795 2410
+Wire Wire Line
+	6795 2410 7135 2410
+$Comp
+L power:+5V #PWR0106
+U 1 1 5BEACE6C
+P 6830 1700
+F 0 "#PWR0106" H 6830 1550 50  0001 C CNN
+F 1 "+5V" H 6845 1873 50  0000 C CNN
+F 2 "" H 6830 1700 50  0001 C CNN
+F 3 "" H 6830 1700 50  0001 C CNN
+	1    6830 1700
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6830 2510 7135 2510
+Wire Wire Line
+	6830 2510 6830 1700
+$Comp
+L power:+3.3V #PWR0107
+U 1 1 5BEB4B8C
+P 8535 1690
+F 0 "#PWR0107" H 8535 1540 50  0001 C CNN
+F 1 "+3.3V" H 8550 1863 50  0000 C CNN
+F 2 "" H 8535 1690 50  0001 C CNN
+F 3 "" H 8535 1690 50  0001 C CNN
+	1    8535 1690
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8535 2520 8535 1690
+Wire Wire Line
+	8135 2520 8535 2520
+Text Label 8440 2620 2    50   ~ 0
+IO13
 $EndSCHEMATC
