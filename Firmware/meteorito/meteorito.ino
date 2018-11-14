@@ -369,6 +369,8 @@ static void envioDatosBLE(){
 
 void setup () {
   Serial.begin(9600);
+  // initialize digital pin LED_BUILTIN as an output.
+  pinMode(2, OUTPUT);
   
   Serial.println("Iniciando Estacion Meteorito");
   Serial.println("por Electronic Cats");
@@ -453,6 +455,14 @@ void loop () {
   Serial.println(direccion);
   Serial.print(precipitacion);
   Serial.println(" mm/s");
+  
+  digitalWrite(2, HIGH);
+  delay(500);                       
+  digitalWrite(2, LOW);   
+  delay(500);
+   digitalWrite(2, HIGH);
+  delay(500);                       
+  digitalWrite(2, LOW);   
   delay(500);
 }
 
