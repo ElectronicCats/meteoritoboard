@@ -62,7 +62,7 @@ bool bandera=0;
 float velocidad=0;
 
 /*Variables uv*/
-const byte pinRayosUV = 12;         //pin Analogico
+const byte pinRayosUV = 27;         //pin Analogico
 
 /*Variables Nubosidad*/
 const byte pinNubosidad = 13;
