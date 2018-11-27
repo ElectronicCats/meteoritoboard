@@ -69,7 +69,7 @@ const byte pinNubosidad = 13;
 
 /*Variables Direccion de Viento*/
 int sumaVeleta=0, i=0;      
-const byte pinDireccion = 14;       //pin Analógico 
+const byte pinDireccion = 16;       //pin Analógico 
 int direccion = 0;
 const int tiempoEnvio=30;
 
