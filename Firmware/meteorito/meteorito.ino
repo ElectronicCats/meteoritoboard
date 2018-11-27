@@ -194,7 +194,7 @@ int leerDireccion(int suma){
   if(suma>=615 && suma< 620) return 315;
 }
 
-/*Funcion para obtener la luz ultravioleta*/
+// Funcion para obtener la luz ultravioleta
 int leerUV(){
   int uv =map(analogRead(pinRayosUV),0,4095,0,15);
   return uv;
@@ -280,7 +280,7 @@ static void envioDatosWiFi() {
   windDirection = String(direccion);
   windSpeed = String(velocidad);
 
-//cargamos una cadena con los datos
+// Cargamos una cadena con los datos
   /*El formato es "{\"data\":{\"metrica\":valor}}"*/
   
   //Ejemplo con un solo valor constante
@@ -385,7 +385,7 @@ void setup () {
     while(1);
   }
 
-//verificación del modulo WiFi y la conexión a internet
+// Verificación del modulo WiFi y la conexión a internet
 
   WiFi.begin(ssid, password);
   int cont = 0;
