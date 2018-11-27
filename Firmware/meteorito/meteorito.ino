@@ -75,7 +75,7 @@ const int tiempoEnvio=30;
 
 //variables manejo de proceso precipitacion
 float precipitacion = 0;
-const byte pinPluviometro = 33;  //pin digital
+const byte pinPluviometro = 17;  //pin digital
 unsigned long tiempoAntesDos;
 unsigned long  tiempoDos=0;
 unsigned long sumaTiempoDos=0;
