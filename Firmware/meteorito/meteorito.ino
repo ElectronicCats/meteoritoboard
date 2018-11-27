@@ -377,10 +377,10 @@ void setup () {
  
   dht.begin();
 
-  /* Initializar el sensor BMP180 */
+  // Initializar el sensor BMP180
   if(!bmp.begin())
   {
-    /* Hubo un problema al detectar el BMP085 ... verifique sus conexiones */
+    // Hubo un problema al detectar el BMP085 ... verifique sus conexiones
     Serial.print("Ooops, no detectado BMP085 ... Checar tu cableado o I2C Direccion!");
     while(1);
   }
