@@ -1,5 +1,5 @@
-/*******************************************************
-Meteorito.ino
+  /*******************************************************
+Meteorito.ino   x 
 Ejemplo de Estacion Meteorologica con ESP32 
 para redmet.org y Meteorito
 Andres Sabas @ The Inventor's House
@@ -11,7 +11,7 @@ Este ejemplo demuestra la conexion y envio de datos
 con un modulo ESP32 a la plataforma 
 http://redmet.org
 
-Entorno de Desarrollo Especifico:  
+    Entorno de Desarrollo Especifico:  
   IDE: Arduino 1.8.4
   Plataforma de Hardware:
     - ESP32 WEMOS D1 Mini
@@ -19,7 +19,7 @@ Entorno de Desarrollo Especifico:
     - VEML6070
     - Fotoresistencia
     - BMP180
-  o Tarjeta de desarrollo Meteorito por Electronic Cats
+  o Tarjeta de desarrollo Meteorito   por Electronic Cats
 
 Este código es beerware; si me ves 
 (o cualquier otro miembro de Electronic Cats) 
@@ -33,12 +33,12 @@ Bajo Licencia MIT
 #include <WiFi.h>
 #include "configuracion.h"
 //Incluir la biblioteca BLE
-#include <BLEDevice.h>
+ #include <BLEDevice.h>
 #include <BLEUtils.h>
 #include <BLEServer.h>
 #include <BLE2902.h>
 //Incluir la biblioteca Sensores
-#include  <DHT.h>
+#include "DHT.h"
 #include <Wire.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BMP085_U.h>
@@ -47,13 +47,14 @@ Adafruit_BMP085_Unified bmp = Adafruit_BMP085_Unified(10085);
 
 sensors_event_t event;
 
-int dhtpin = 23;
+#define DHTPIN 23  
+#define DHTTYPE DHT22
 float temperature;
 float temperatura;
 float humedad;
    
 /*Variables Anemometro*/
-const int pinAnemometro = 25;
+const int pinAnemometro = 26;
 unsigned long tiempoAntes;
 unsigned long  tiempo=0;
 unsigned long sumaTiempo=0;
@@ -62,10 +63,10 @@ bool bandera=0;
 float velocidad=0;
 
 /*Variables uv*/
-const byte pinRayosUV = 27;         //pin Analogico
+const byte pinRayosUV = 35;         //pin Analogico
 
 /*Variables Nubosidad*/
-const byte pinNubosidad = 13;
+const byte pinNubosidad = 39;
 
 /*Variables Direccion de Viento*/
 int sumaVeleta=0, i=0;      
@@ -83,7 +84,7 @@ byte contadorDos=0;
 const int capacidadTotal=10;   //capacidad combinada de ambos lados en mL
 
 
-DHT dht (dhtpin,DHT22);
+DHT dht(DHTPIN, DHTTYPE);
 
 bool _BLEClientConnected = false;
 
@@ -196,14 +197,14 @@ int leerDireccion(int suma){
 
 // Funcion para obtener la luz ultravioleta
 int leerUV(){
-  int uv =map(analogRead(pinRayosUV),0,4095,0,15);
+  int uv =map(analogRead(pinRayosUV),0,1350,0,85);
   return uv;
 }
 
 /*Funcion para obtener nubosidad*/
 char nubosidad() {
   int lecturaSensor=analogRead(pinNubosidad);
-  char nubosidad = tipoNubosidad[map(lecturaSensor, 0, 4096, 0, 5)];
+  char nubosidad = tipoNubosidad[map(lecturaSensor, 0, 3700, 0, 7)];
   Serial.print("Nubosidad: "); 
   Serial.println(nubosidad); 
   return nubosidad;
@@ -250,10 +251,10 @@ void presion(){
     Serial.println(" m");
     Serial.println("");
   }
-  else
-  {
-    Serial.println("Sensor error");
-  }
+ // else
+ // {
+ // Serial.println("Sensor error");
+ // }
 }
 
 /*
