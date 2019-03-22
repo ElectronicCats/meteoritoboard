@@ -1,5 +1,5 @@
   /*******************************************************
-Meteorito.ino   x 
+Meteorito.ino
 Ejemplo de Estacion Meteorologica con ESP32 
 para redmet.org y Meteorito
 Andres Sabas @ The Inventor's House
@@ -251,10 +251,10 @@ void presion(){
     Serial.println(" m");
     Serial.println("");
   }
- // else
- // {
- // Serial.println("Sensor error");
- // }
+  else
+  {
+    Serial.println("Sensor error");
+  }
 }
 
 /*
@@ -282,7 +282,10 @@ static void envioDatosWiFi() {
   windSpeed = String(velocidad);
 
 // Cargamos una cadena con los datos
-  /*El formato es "{\"data\":{\"metrica\":valor}}"*/
+  
+  /*
+  * El formato es "{\"data\":{\"metrica\":valor}}"
+  */
   
   //Ejemplo con un solo valor constante
   //String dato="{\"data\":{\"temp\":15}}";
@@ -317,6 +320,7 @@ static void envioDatosWiFi() {
         Serial.print(line);
     }
 }
+
 /*
  *Función de envio de datos via BLE
  */
