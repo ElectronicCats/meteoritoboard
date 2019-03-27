@@ -54,7 +54,7 @@ float temperatura;
 float humedad;
    
 /*Variables Anemometro*/
-const int pinAnemometro = 26;
+const int pinAnemometro = 25;
 unsigned long tiempoAntes;
 unsigned long  tiempo=0;
 unsigned long sumaTiempo=0;
@@ -66,7 +66,7 @@ float velocidad=0;
 const byte pinRayosUV = 35;         //pin Analogico
 
 /*Variables Nubosidad*/
-const byte pinNubosidad = 39;
+const byte pinNubosidad = 33;
 
 /*Variables Direccion de Viento*/
 int sumaVeleta=0, i=0;      
@@ -204,7 +204,7 @@ int leerUV(){
 /*Funcion para obtener nubosidad*/
 char nubosidad() {
   int lecturaSensor=analogRead(pinNubosidad);
-  char nubosidad = tipoNubosidad[map(lecturaSensor, 0, 3700, 0, 7)];
+  char nubosidad = tipoNubosidad[map(lecturaSensor, 0, 4095, 0, 5)];
   Serial.print("Nubosidad: "); 
   Serial.println(nubosidad); 
   return nubosidad;
@@ -499,11 +499,12 @@ void interrupcionViento() {
     if(bandera==0){
       tiempo=(millis()-tiempoAntes);
       tiempoAntes=millis();
-      sumaTiempo+=tiempo; 
+      sumaTiempo==tiempo; 
       if(contador<=19){
         contador++;
         //Serial.println(contador);
-      }else{
+      }
+      else{
         contador=0;
         velocidad=(2*3.1416*0.05*3.6)/((sumaTiempo/1000.0)/20);
         //Serial.print(velocidad);
