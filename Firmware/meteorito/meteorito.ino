@@ -63,20 +63,20 @@ bool bandera=0;
 float velocidad=0;
 
 /*Variables uv*/
-const byte pinRayosUV = 35;         //pin Analogico
+const byte pinRayosUV = 33;         //pin Analogico
 
 /*Variables Nubosidad*/
-const byte pinNubosidad = 33;
+const byte pinNubosidad = 35;
 
 /*Variables Direccion de Viento*/
 int sumaVeleta=0, i=0;      
-const byte pinDireccion = 16;       //pin Analógico 
+const byte pinDireccion = 17;       //pin Analógico 
 int direccion = 0;
 const int tiempoEnvio=30;
 
 //variables manejo de proceso precipitacion
 float precipitacion = 0;
-const byte pinPluviometro = 17;  //pin digital
+const byte pinPluviometro = 16;  //pin digital
 unsigned long tiempoAntesDos;
 unsigned long  tiempoDos=0;
 unsigned long sumaTiempoDos=0;
