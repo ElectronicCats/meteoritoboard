@@ -95,8 +95,8 @@ BLECharacteristic PresionCharacteristics(BLEUUID((uint16_t)0x2A6D), BLECharacter
 BLECharacteristic UvCharacteristics(BLEUUID((uint16_t)0x2A76), BLECharacteristic::PROPERTY_READ);
 //BLECharacteristic DireccionVientoCharacteristics(BLEUUID((uint16_t)0x2A73), BLECharacteristic::PROPERTY_READ);
 BLECharacteristic NubosidadCharacteristics(BLEUUID((uint16_t)0x2A58), BLECharacteristic::PROPERTY_READ);
-//BLECharacteristic VelocidadVientoCharacteristics(BLEUUID((uint16_t) 0x2A72), BLECharacteristic::PROPERTY_READ);
-//BLECharacteristic PrecipitacionCharacteristics(BLEUUID((uint16_t) 0x2A78), BLECharacteristic::PROPERTY_READ);
+BLECharacteristic VelocidadVientoCharacteristics(BLEUUID((uint16_t) 0x2A72), BLECharacteristic::PROPERTY_READ);
+BLECharacteristic PrecipitacionCharacteristics(BLEUUID((uint16_t) 0x2A78), BLECharacteristic::PROPERTY_READ);
 //BLECharacteristic AltitudCharacteristics(BLEUUID((uint16_t) 0x2A6C), BLECharacteristic::PROPERTY_READ);
 
 BLEDescriptor TemperaturaDescriptor(BLEUUID((uint16_t)0x290C));
@@ -105,8 +105,8 @@ BLEDescriptor PresionDescriptor(BLEUUID((uint16_t)0x290C));
 BLEDescriptor UvDescriptor(BLEUUID((uint16_t)0x290C));
 //BLEDescriptor DireccionVientoDescriptor(BLEUUID((uint16_t)0x290C));
 BLEDescriptor NubosidadDescriptor(BLEUUID((uint16_t)0x290C));
-//BLEDescriptor VelocidadVientoDescriptor(BLEUUID((uint16_t)0x290C));
-//BLEDescriptor PrecipitacionDescriptor(BLEUUID((uint16_t)0x290C));
+BLEDescriptor VelocidadVientoDescriptor(BLEUUID((uint16_t)0x290C));
+BLEDescriptor PrecipitacionDescriptor(BLEUUID((uint16_t)0x290C));
 //BLEDescriptor AltitudDescriptor(BLEUUID((uint16_t)0x290C));
 
 class MyServerCallbacks : public BLEServerCallbacks {
@@ -144,17 +144,17 @@ void InitBLE() {
  pMeteorito->addCharacteristic(&NubosidadCharacteristics);
  NubosidadCharacteristics.addDescriptor(&NubosidadDescriptor);
 //Caracteristica Dirección del viento
- //pHeart->addCharacteristic(&DireccionVientoCharacteristics);
+ //pMeteorito->addCharacteristic(&DireccionVientoCharacteristics);
   //DireccionVientoDescriptor.setValue("Position 0 - 6");
   //DireccionVientoCharacteristics.addDescriptor(&DireccionVientoDescriptor);
 //Caracteristica Velocidad del viento
- //pHeart->addCharacteristic(&VelocidadVientoCharacteristics);
-  //DireccionVientoDescriptor.setValue("Position 0 - 6");
-  //DireccionVientoCharacteristics.addDescriptor(&VelocidadVientoDescriptor);
+ pMeteorito->addCharacteristic(&VelocidadVientoCharacteristics);
+  VelocidadVientoDescriptor.setValue("Position 0 - 6");
+  VelocidadVientoCharacteristics.addDescriptor(&VelocidadVientoDescriptor);
 //Precipitacion
- //pHeart->addCharacteristic(&PrecipitacionCharacteristics);
-  //PrecipitacionDescriptor.setValue("Position 0 - 6");
-  //PrecipitacionCharacteristics.addDescriptor(&PrecipitacionDescriptor);
+ pMeteorito->addCharacteristic(&PrecipitacionCharacteristics);
+  PrecipitacionDescriptor.setValue("Position 0 - 6");
+  PrecipitacionCharacteristics.addDescriptor(&PrecipitacionDescriptor);
 // pHeart->addCharacteristic(&AltitudCharacteristics);
 //  AltitudCharacteristics.addDescriptor(&AltitudDescriptor);
 
