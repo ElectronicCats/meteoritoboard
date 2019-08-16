@@ -5,7 +5,7 @@ para redmet.org y Meteorito
 Andres Sabas @ The Inventor's House
 Brando Are @ Electronic Cats
 Fecha Original de Creación: 28 de Octubre del 2017
-Ultima Actualizacion: 26 Septiembre 2018
+Ultima Actualizacion: 16 Agosto 2019
 
 Este ejemplo demuestra la conexion y envio de datos 
 con un modulo ESP32 a la plataforma 
@@ -44,6 +44,7 @@ Bajo Licencia MIT
 #include <Adafruit_BMP085_U.h>
 
 #define DEBUG
+//#define DEBUG2
 
 //TaskHandle_t Task1;
 Adafruit_BMP085_Unified bmp = Adafruit_BMP085_Unified(10085);
@@ -285,7 +286,7 @@ static void envioDatosWiFi() {
   Serial.println(F("Connected."));
 
   //Asignar parametros a enviar:
-         /*clouds, humidity, pressure, rain, temp, uv, windDirection, windSpeed*/
+  /*clouds, humidity, pressure, rain, temp, uv, windDirection, windSpeed*/
   String clouds, humidity, pressure, rain, temp, indiceUV, windDirection, windSpeed;
   
   clouds = String(nubosidad());
@@ -312,7 +313,7 @@ static void envioDatosWiFi() {
   //Lectura de todos los valores posibles
   String dato="{\"data\":{\"clouds\":\""+clouds+"\",\"humidity\":\""+humidity+"\",\"pressure\":\""+pressure+"\",\"rain\":\""+rain+"\",\"temp\":\""+temp+"\",\"uv\":\""+indiceUV+"\",\"windDirection\":\""+windDirection+"\",\"windSpeed\":\""+windSpeed+"\"}}";
   
-  #ifdef DEBUG2
+  #ifdef DEBUG
   Serial.println(F("Enviando datos!"));
   Serial.println(dato);
   #endif
@@ -441,8 +442,6 @@ void setup () {
 }
 
 void loop () {
-  velocidad=0;
-  precipitacion=0;
   temperatura = dht.readTemperature();
   humedad = dht.readHumidity();
      
@@ -528,7 +527,7 @@ void interrupcionViento() {
     if(bandera==0){
       tiempo=(millis()-tiempoAntes);
       tiempoAntes=millis();
-      sumaTiempo==tiempo; 
+      sumaTiempo=+tiempo; 
       if(contador<=19){
         contador++;
         #ifdef DEBUG2
