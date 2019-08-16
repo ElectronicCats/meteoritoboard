@@ -43,6 +43,9 @@ Bajo Licencia MIT
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BMP085_U.h>
 
+#define DEBUG
+
+//TaskHandle_t Task1;
 Adafruit_BMP085_Unified bmp = Adafruit_BMP085_Unified(10085);
 
 sensors_event_t event;
@@ -60,7 +63,15 @@ unsigned long  tiempo=0;
 unsigned long sumaTiempo=0;
 byte contador=0;
 bool bandera=0;
-float velocidad=0;
+
+int t_A = 0, t_V = 0;                   //Tiempo nuevo y antiguo para calcular el tiempo transcurrido
+int cuenta = 0;                       //Guarda las veces que la entrada recibe señal
+int HallEntrada, HallEntradaAnterior;   //Estado en el que se encuentra la entrada (Nuevo y Anterior)
+float segundos;
+const int tAntirebote = 10; //Tiempo Antirebote
+
+float m ;
+float velocidad = 0;
 
 /*Variables uv*/
 const byte pinRayosUV = 33;         //pin Analogico
@@ -205,8 +216,12 @@ int leerUV(){
 char nubosidad() {
   int lecturaSensor=analogRead(pinNubosidad);
   char nubosidad = tipoNubosidad[map(lecturaSensor, 0, 4095, 0, 5)];
+  
+  #ifdef DEBUG2
   Serial.print("Nubosidad: "); 
   Serial.println(nubosidad); 
+  #endif
+
   return nubosidad;
 }
 
@@ -215,10 +230,13 @@ void presion(){
   /* Muestra los resultados (la presión barométrica se mide en hPa) */
   if (event.pressure)
   {
+    
     /* Display atmospheric pressue in hPa */
+    #ifdef DEBUG2
     Serial.print("Presion:    ");
     Serial.print(event.pressure*0.1);
     Serial.println(" hPa");
+    #endif
     
     /* Calculating altitude with reasonable accuracy requires pressure    *
      * sea level pressure for your position at the moment the data is     *
@@ -238,18 +256,24 @@ void presion(){
     /* Primero obtenemos la temperatura actual del BMP085 */
     float temperature;
     bmp.getTemperature(&temperature);
+    
+    #ifdef DEBUG2
     Serial.print("Temperatura BMP180: ");
     Serial.print(temperature);
     Serial.println(" C");
+    #endif
 
     /* Luego convierte la presión atmosférica, y SLP a la altitud        */
     /* Actualice esta próxima línea con el SLP actual para obtener mejores resultados     */
     float seaLevelPressure = SENSORS_PRESSURE_SEALEVELHPA;
+    
+    #ifdef DEBUG2
     Serial.print("Altitud:    "); 
     Serial.print(bmp.pressureToAltitude(seaLevelPressure,
                                         event.pressure)); 
     Serial.println(" m");
     Serial.println("");
+    #endif
   }
   else
   {
@@ -296,9 +320,11 @@ static void envioDatosWiFi() {
   //Lectura de todos los valores posibles
   String dato="{\"data\":{\"clouds\":\""+clouds+"\",\"humidity\":\""+humidity+"\",\"pressure\":\""+pressure+"\",\"rain\":\""+rain+"\",\"temp\":\""+temp+"\",\"uv\":\""+indiceUV+"\",\"windDirection\":\""+windDirection+"\",\"windSpeed\":\""+windSpeed+"\"}}";
   
+  #ifdef DEBUG2
   Serial.println(F("Enviando datos!"));
   Serial.println(dato);
-
+  #endif
+  
   client.print(httpHeader);
   client.print("Content-Length: "); 
   client.println(dato.length());
@@ -373,6 +399,18 @@ static void envioDatosBLE(){
 }
 
 void setup () {
+/*
+    xTaskCreatePinnedToCore(
+                    Task1code,   // Task function. 
+                    "Task1",     // name of task.
+                    10000,       // Stack size of task 
+                    NULL,        // parameter of the task
+                    1,           // priority of the task
+                    &Task1,      // Task handle to keep track of created task
+                    1);          // pin task to core 0                
+  delay(500); 
+*/
+
   Serial.begin(9600);
   // initialize digital pin LED_BUILTIN as an output.
   pinMode(2, OUTPUT);
@@ -422,6 +460,8 @@ void setup () {
 }
 
 void loop () {
+  velocidad=0;
+  precipitacion=0;
   temperatura = dht.readTemperature();
   humedad = dht.readHumidity();
      
@@ -441,10 +481,13 @@ void loop () {
   }
  
   noInterrupts();
+  delayMicroseconds(200);
   envioDatosWiFi();
   envioDatosBLE();
-  interrupts();
+  interrupts();  
+  delayMicroseconds(200); 
   
+  #ifdef DEBUG
   Serial.println("");
   //Mostrar variables
   Serial.print("temperatura: ");
@@ -454,13 +497,15 @@ void loop () {
   Serial.print("UV nivel luz: "); 
   Serial.println(leerUV());
   Serial.print("Velocidad del viento: "); 
-  Serial.print(velocidad);
+  Serial.print(velocidad,10);
   Serial.println("  Km/h");
   Serial.print("dirección: ");
   Serial.println(direccion);
   Serial.print(precipitacion);
   Serial.println(" mm/s");
-  
+  #endif
+
+
   digitalWrite(2, HIGH);
   delay(500);                       
   digitalWrite(2, LOW);   
@@ -469,6 +514,7 @@ void loop () {
   delay(500);                       
   digitalWrite(2, LOW);   
   delay(500);
+
 }
 
 /*
@@ -493,7 +539,9 @@ void printWifiStatus()
   Serial.println(" dBm");
 }
 
+
 void interrupcionViento() {
+  noInterrupts();
   if( millis()>(50+tiempoAntes)){
     bandera=!bandera;
     if(bandera==0){
@@ -502,21 +550,72 @@ void interrupcionViento() {
       sumaTiempo==tiempo; 
       if(contador<=19){
         contador++;
-        //Serial.println(contador);
+        #ifdef DEBUG2
+        Serial.println(contador);
+        #endif
       }
       else{
         contador=0;
         velocidad=(2*3.1416*0.05*3.6)/((sumaTiempo/1000.0)/20);
-        //Serial.print(velocidad);
-        //Serial.println("  Km/h");
+        #ifdef DEBUG2
+        Serial.print(velocidad);
+        Serial.println("  Km/h");
+        #endif
         sumaTiempo=0;
       }
     }
   }
+  interrupts();
 }
 
-//interrupcion para precipitación
+/*void Task1code( void * pvParameters ){
+  for(;;){
+  float total;
+  HallEntrada = digitalRead (pinAnemometro);     //Lectura del pin 2
+  if (HallEntrada != HallEntradaAnterior)//Si entradaHall es distinto a entradaAntiguaHall
+  {
+    if (HallEntrada == 0)                //Miramos si hay iman
+    {
+      cuenta++;                         //Si hay aumentamos la cuenta
+      if (t_V == 0)                     //Si esl tiempo antiguo es igual a 0
+      {
+          t_V = millis();               //Tiempo antiguo igual a millis
+      }
+      else                              //En caso contrario de que no haya iman
+      {
+        t_A = millis();                 //Tiempo nuevo igual a millis
+        total = t_A - t_V;               //Total es igual a la diferencia que hay entre el tiempo antiguo y en nuevo
+        t_V = t_A;                      //EL tiempo antiguo adquiere el valor del tiempo nuevo
+        //pasamos a segundos
+        segundos = total/1000;        //Dividimos entre 1000 para pasar total a segundos ya que lo calculamos en milesimas de segundo
+        m = float(2.3) / 100 ;
+        velocidad =( (m) / segundos )*(3.6);      
+      }
+
+
+
+      //Mostramos por puerto Serie
+      #ifdef DEBUG
+      Serial.print (cuenta);
+      Serial.print (" Veces -->");
+      Serial.print ("Han pasado: ");       
+      Serial.print (segundos, 4);
+      Serial.print (" Segundos -->");
+      Serial.print ("Velocidad: ");       
+      Serial.print (velocidad, 10);
+      Serial.println (" m/s");
+      #endif
+    }
+  }
+  HallEntradaAnterior = HallEntrada;      // guardamos el estado del entrada
+  } 
+}
+*/
+
+
+//Interrupcion para precipitación
 void interrupcionPrecipitacion() {
+  noInterrupts();
   if( millis()>(50+tiempoAntesDos)){
       tiempoDos=(millis()-tiempoAntesDos);
       tiempoAntesDos=millis();
@@ -529,4 +628,5 @@ void interrupcionPrecipitacion() {
         sumaTiempoDos=0;
       }
   }
+  interrupts();
 }
