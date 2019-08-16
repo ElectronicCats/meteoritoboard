@@ -63,14 +63,6 @@ unsigned long  tiempo=0;
 unsigned long sumaTiempo=0;
 byte contador=0;
 bool bandera=0;
-
-int t_A = 0, t_V = 0;                   //Tiempo nuevo y antiguo para calcular el tiempo transcurrido
-int cuenta = 0;                       //Guarda las veces que la entrada recibe señal
-int HallEntrada, HallEntradaAnterior;   //Estado en el que se encuentra la entrada (Nuevo y Anterior)
-float segundos;
-const int tAntirebote = 10; //Tiempo Antirebote
-
-float m ;
 float velocidad = 0;
 
 /*Variables uv*/
@@ -399,19 +391,8 @@ static void envioDatosBLE(){
 }
 
 void setup () {
-/*
-    xTaskCreatePinnedToCore(
-                    Task1code,   // Task function. 
-                    "Task1",     // name of task.
-                    10000,       // Stack size of task 
-                    NULL,        // parameter of the task
-                    1,           // priority of the task
-                    &Task1,      // Task handle to keep track of created task
-                    1);          // pin task to core 0                
-  delay(500); 
-*/
-
   Serial.begin(9600);
+  
   // initialize digital pin LED_BUILTIN as an output.
   pinMode(2, OUTPUT);
   
@@ -567,51 +548,6 @@ void interrupcionViento() {
   }
   interrupts();
 }
-
-/*void Task1code( void * pvParameters ){
-  for(;;){
-  float total;
-  HallEntrada = digitalRead (pinAnemometro);     //Lectura del pin 2
-  if (HallEntrada != HallEntradaAnterior)//Si entradaHall es distinto a entradaAntiguaHall
-  {
-    if (HallEntrada == 0)                //Miramos si hay iman
-    {
-      cuenta++;                         //Si hay aumentamos la cuenta
-      if (t_V == 0)                     //Si esl tiempo antiguo es igual a 0
-      {
-          t_V = millis();               //Tiempo antiguo igual a millis
-      }
-      else                              //En caso contrario de que no haya iman
-      {
-        t_A = millis();                 //Tiempo nuevo igual a millis
-        total = t_A - t_V;               //Total es igual a la diferencia que hay entre el tiempo antiguo y en nuevo
-        t_V = t_A;                      //EL tiempo antiguo adquiere el valor del tiempo nuevo
-        //pasamos a segundos
-        segundos = total/1000;        //Dividimos entre 1000 para pasar total a segundos ya que lo calculamos en milesimas de segundo
-        m = float(2.3) / 100 ;
-        velocidad =( (m) / segundos )*(3.6);      
-      }
-
-
-
-      //Mostramos por puerto Serie
-      #ifdef DEBUG
-      Serial.print (cuenta);
-      Serial.print (" Veces -->");
-      Serial.print ("Han pasado: ");       
-      Serial.print (segundos, 4);
-      Serial.print (" Segundos -->");
-      Serial.print ("Velocidad: ");       
-      Serial.print (velocidad, 10);
-      Serial.println (" m/s");
-      #endif
-    }
-  }
-  HallEntradaAnterior = HallEntrada;      // guardamos el estado del entrada
-  } 
-}
-*/
-
 
 //Interrupcion para precipitación
 void interrupcionPrecipitacion() {
