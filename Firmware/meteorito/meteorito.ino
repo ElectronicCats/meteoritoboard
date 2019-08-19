@@ -208,7 +208,7 @@ int leerUV(){
 /*Funcion para obtener nubosidad*/
 char nubosidad() {
   int lecturaSensor=analogRead(pinNubosidad);
-  char nubosidad = tipoNubosidad[map(lecturaSensor, 0, 4095, 0, 5)];
+  char nubosidad = tipoNubosidad[map(lecturaSensor, 0, 4095, 0, 4)];
   
   #ifdef DEBUG2
   Serial.print("Nubosidad: "); 
