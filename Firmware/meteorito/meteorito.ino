@@ -5,7 +5,7 @@ para redmet.org y Meteorito
 Andres Sabas @ The Inventor's House
 Brando Are @ Electronic Cats
 Fecha Original de Creación: 28 de Octubre del 2017
-Ultima Actualizacion: 26 Septiembre 2018
+Ultima Actualizacion: 16 Agosto 2019
 
 Este ejemplo demuestra la conexion y envio de datos 
 con un modulo ESP32 a la plataforma 
@@ -43,6 +43,10 @@ Bajo Licencia MIT
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BMP085_U.h>
 
+#define DEBUG
+//#define DEBUG2
+
+//TaskHandle_t Task1;
 Adafruit_BMP085_Unified bmp = Adafruit_BMP085_Unified(10085);
 
 sensors_event_t event;
@@ -60,7 +64,7 @@ unsigned long  tiempo=0;
 unsigned long sumaTiempo=0;
 byte contador=0;
 bool bandera=0;
-float velocidad=0;
+float velocidad = 0;
 
 /*Variables uv*/
 const byte pinRayosUV = 33;         //pin Analogico
@@ -95,8 +99,8 @@ BLECharacteristic PresionCharacteristics(BLEUUID((uint16_t)0x2A6D), BLECharacter
 BLECharacteristic UvCharacteristics(BLEUUID((uint16_t)0x2A76), BLECharacteristic::PROPERTY_READ);
 //BLECharacteristic DireccionVientoCharacteristics(BLEUUID((uint16_t)0x2A73), BLECharacteristic::PROPERTY_READ);
 BLECharacteristic NubosidadCharacteristics(BLEUUID((uint16_t)0x2A58), BLECharacteristic::PROPERTY_READ);
-//BLECharacteristic VelocidadVientoCharacteristics(BLEUUID((uint16_t) 0x2A72), BLECharacteristic::PROPERTY_READ);
-//BLECharacteristic PrecipitacionCharacteristics(BLEUUID((uint16_t) 0x2A78), BLECharacteristic::PROPERTY_READ);
+BLECharacteristic VelocidadVientoCharacteristics(BLEUUID((uint16_t) 0x2A72), BLECharacteristic::PROPERTY_READ);
+BLECharacteristic PrecipitacionCharacteristics(BLEUUID((uint16_t) 0x2A78), BLECharacteristic::PROPERTY_READ);
 //BLECharacteristic AltitudCharacteristics(BLEUUID((uint16_t) 0x2A6C), BLECharacteristic::PROPERTY_READ);
 
 BLEDescriptor TemperaturaDescriptor(BLEUUID((uint16_t)0x290C));
@@ -105,8 +109,8 @@ BLEDescriptor PresionDescriptor(BLEUUID((uint16_t)0x290C));
 BLEDescriptor UvDescriptor(BLEUUID((uint16_t)0x290C));
 //BLEDescriptor DireccionVientoDescriptor(BLEUUID((uint16_t)0x290C));
 BLEDescriptor NubosidadDescriptor(BLEUUID((uint16_t)0x290C));
-//BLEDescriptor VelocidadVientoDescriptor(BLEUUID((uint16_t)0x290C));
-//BLEDescriptor PrecipitacionDescriptor(BLEUUID((uint16_t)0x290C));
+BLEDescriptor VelocidadVientoDescriptor(BLEUUID((uint16_t)0x290C));
+BLEDescriptor PrecipitacionDescriptor(BLEUUID((uint16_t)0x290C));
 //BLEDescriptor AltitudDescriptor(BLEUUID((uint16_t)0x290C));
 
 class MyServerCallbacks : public BLEServerCallbacks {
@@ -144,17 +148,17 @@ void InitBLE() {
  pMeteorito->addCharacteristic(&NubosidadCharacteristics);
  NubosidadCharacteristics.addDescriptor(&NubosidadDescriptor);
 //Caracteristica Dirección del viento
- //pHeart->addCharacteristic(&DireccionVientoCharacteristics);
+ //pMeteorito->addCharacteristic(&DireccionVientoCharacteristics);
   //DireccionVientoDescriptor.setValue("Position 0 - 6");
   //DireccionVientoCharacteristics.addDescriptor(&DireccionVientoDescriptor);
 //Caracteristica Velocidad del viento
- //pHeart->addCharacteristic(&VelocidadVientoCharacteristics);
-  //DireccionVientoDescriptor.setValue("Position 0 - 6");
-  //DireccionVientoCharacteristics.addDescriptor(&VelocidadVientoDescriptor);
+ pMeteorito->addCharacteristic(&VelocidadVientoCharacteristics);
+  VelocidadVientoDescriptor.setValue("Position 0 - 6");
+  VelocidadVientoCharacteristics.addDescriptor(&VelocidadVientoDescriptor);
 //Precipitacion
- //pHeart->addCharacteristic(&PrecipitacionCharacteristics);
-  //PrecipitacionDescriptor.setValue("Position 0 - 6");
-  //PrecipitacionCharacteristics.addDescriptor(&PrecipitacionDescriptor);
+ pMeteorito->addCharacteristic(&PrecipitacionCharacteristics);
+  PrecipitacionDescriptor.setValue("Position 0 - 6");
+  PrecipitacionCharacteristics.addDescriptor(&PrecipitacionDescriptor);
 // pHeart->addCharacteristic(&AltitudCharacteristics);
 //  AltitudCharacteristics.addDescriptor(&AltitudDescriptor);
 
@@ -197,16 +201,20 @@ int leerDireccion(int suma){
 
 // Funcion para obtener la luz ultravioleta
 int leerUV(){
-  int uv =map(analogRead(pinRayosUV),0,1350,0,85);
+  int uv =map(analogRead(pinRayosUV),0,1350,0,15);
   return uv;
 }
 
 /*Funcion para obtener nubosidad*/
 char nubosidad() {
   int lecturaSensor=analogRead(pinNubosidad);
-  char nubosidad = tipoNubosidad[map(lecturaSensor, 0, 4095, 0, 5)];
+  char nubosidad = tipoNubosidad[map(lecturaSensor, 0, 4095, 0, 4)];
+  
+  #ifdef DEBUG2
   Serial.print("Nubosidad: "); 
   Serial.println(nubosidad); 
+  #endif
+
   return nubosidad;
 }
 
@@ -215,10 +223,13 @@ void presion(){
   /* Muestra los resultados (la presión barométrica se mide en hPa) */
   if (event.pressure)
   {
+    
     /* Display atmospheric pressue in hPa */
+    #ifdef DEBUG2
     Serial.print("Presion:    ");
     Serial.print(event.pressure*0.1);
     Serial.println(" hPa");
+    #endif
     
     /* Calculating altitude with reasonable accuracy requires pressure    *
      * sea level pressure for your position at the moment the data is     *
@@ -238,18 +249,24 @@ void presion(){
     /* Primero obtenemos la temperatura actual del BMP085 */
     float temperature;
     bmp.getTemperature(&temperature);
+    
+    #ifdef DEBUG2
     Serial.print("Temperatura BMP180: ");
     Serial.print(temperature);
     Serial.println(" C");
+    #endif
 
     /* Luego convierte la presión atmosférica, y SLP a la altitud        */
     /* Actualice esta próxima línea con el SLP actual para obtener mejores resultados     */
     float seaLevelPressure = SENSORS_PRESSURE_SEALEVELHPA;
+    
+    #ifdef DEBUG2
     Serial.print("Altitud:    "); 
     Serial.print(bmp.pressureToAltitude(seaLevelPressure,
                                         event.pressure)); 
     Serial.println(" m");
     Serial.println("");
+    #endif
   }
   else
   {
@@ -269,7 +286,7 @@ static void envioDatosWiFi() {
   Serial.println(F("Connected."));
 
   //Asignar parametros a enviar:
-         /*clouds, humidity, pressure, rain, temp, uv, windDirection, windSpeed*/
+  /*clouds, humidity, pressure, rain, temp, uv, windDirection, windSpeed*/
   String clouds, humidity, pressure, rain, temp, indiceUV, windDirection, windSpeed;
   
   clouds = String(nubosidad());
@@ -296,9 +313,11 @@ static void envioDatosWiFi() {
   //Lectura de todos los valores posibles
   String dato="{\"data\":{\"clouds\":\""+clouds+"\",\"humidity\":\""+humidity+"\",\"pressure\":\""+pressure+"\",\"rain\":\""+rain+"\",\"temp\":\""+temp+"\",\"uv\":\""+indiceUV+"\",\"windDirection\":\""+windDirection+"\",\"windSpeed\":\""+windSpeed+"\"}}";
   
+  #ifdef DEBUG
   Serial.println(F("Enviando datos!"));
   Serial.println(dato);
-
+  #endif
+  
   client.print(httpHeader);
   client.print("Content-Length: "); 
   client.println(dato.length());
@@ -374,6 +393,7 @@ static void envioDatosBLE(){
 
 void setup () {
   Serial.begin(9600);
+  
   // initialize digital pin LED_BUILTIN as an output.
   pinMode(2, OUTPUT);
   
@@ -441,10 +461,13 @@ void loop () {
   }
  
   noInterrupts();
+  delayMicroseconds(200);
   envioDatosWiFi();
   envioDatosBLE();
-  interrupts();
+  interrupts();  
+  delayMicroseconds(200); 
   
+  #ifdef DEBUG
   Serial.println("");
   //Mostrar variables
   Serial.print("temperatura: ");
@@ -454,13 +477,15 @@ void loop () {
   Serial.print("UV nivel luz: "); 
   Serial.println(leerUV());
   Serial.print("Velocidad del viento: "); 
-  Serial.print(velocidad);
+  Serial.print(velocidad,10);
   Serial.println("  Km/h");
   Serial.print("dirección: ");
   Serial.println(direccion);
   Serial.print(precipitacion);
   Serial.println(" mm/s");
-  
+  #endif
+
+
   digitalWrite(2, HIGH);
   delay(500);                       
   digitalWrite(2, LOW);   
@@ -469,6 +494,7 @@ void loop () {
   delay(500);                       
   digitalWrite(2, LOW);   
   delay(500);
+
 }
 
 /*
@@ -493,30 +519,38 @@ void printWifiStatus()
   Serial.println(" dBm");
 }
 
+
 void interrupcionViento() {
+  noInterrupts();
   if( millis()>(50+tiempoAntes)){
     bandera=!bandera;
     if(bandera==0){
       tiempo=(millis()-tiempoAntes);
       tiempoAntes=millis();
-      sumaTiempo==tiempo; 
+      sumaTiempo=+tiempo; 
       if(contador<=19){
         contador++;
-        //Serial.println(contador);
+        #ifdef DEBUG2
+        Serial.println(contador);
+        #endif
       }
       else{
         contador=0;
         velocidad=(2*3.1416*0.05*3.6)/((sumaTiempo/1000.0)/20);
-        //Serial.print(velocidad);
-        //Serial.println("  Km/h");
+        #ifdef DEBUG2
+        Serial.print(velocidad);
+        Serial.println("  Km/h");
+        #endif
         sumaTiempo=0;
       }
     }
   }
+  interrupts();
 }
 
-//interrupcion para precipitación
+//Interrupcion para precipitación
 void interrupcionPrecipitacion() {
+  noInterrupts();
   if( millis()>(50+tiempoAntesDos)){
       tiempoDos=(millis()-tiempoAntesDos);
       tiempoAntesDos=millis();
@@ -529,4 +563,5 @@ void interrupcionPrecipitacion() {
         sumaTiempoDos=0;
       }
   }
+  interrupts();
 }
