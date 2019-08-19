@@ -201,7 +201,7 @@ int leerDireccion(int suma){
 
 // Funcion para obtener la luz ultravioleta
 int leerUV(){
-  int uv =map(analogRead(pinRayosUV),0,1350,0,85);
+  int uv =map(analogRead(pinRayosUV),0,1350,0,15);
   return uv;
 }
 
