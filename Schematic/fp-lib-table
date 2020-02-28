@@ -1,0 +1,3 @@
+(fp_lib_table
+  (lib (name meteorito)(type KiCad)(uri ${KIPRJMOD}/lib/meteorito.pretty)(options "")(descr ""))
+)
