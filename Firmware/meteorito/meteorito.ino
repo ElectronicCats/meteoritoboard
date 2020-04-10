@@ -41,13 +41,14 @@ Bajo Licencia MIT
 #include "DHT.h"
 #include <Wire.h>
 #include <Adafruit_Sensor.h>
-#include <Adafruit_BMP085_U.h>
+#include <SFE_BMP180.h>
 
 #define DEBUG
 //#define DEBUG2
 
 //TaskHandle_t Task1;
-Adafruit_BMP085_Unified bmp = Adafruit_BMP085_Unified(10085);
+#define ALTITUDE 1888.0
+SFE_BMP180 pressure;
 
 sensors_event_t event;
 
@@ -56,6 +57,7 @@ sensors_event_t event;
 float temperature;
 float temperatura;
 float humedad;
+float presion2;
    
 /*Variables Anemometro*/
 const int pinAnemometro = 25;
@@ -219,59 +221,45 @@ char nubosidad() {
 }
 
 /*Funcion para obtener presion y altura*/
-void presion(){
-  /* Muestra los resultados (la presión barométrica se mide en hPa) */
-  if (event.pressure)
+float presion()
+{
+  char status;
+  double T,P,P2,p0,a;
+  status = pressure.startTemperature();
+  if (status != 0)
   {
-    
-    /* Display atmospheric pressue in hPa */
-    #ifdef DEBUG2
-    Serial.print("Presion:    ");
-    Serial.print(event.pressure*0.1);
-    Serial.println(" hPa");
-    #endif
-    
-    /* Calculating altitude with reasonable accuracy requires pressure    *
-     * sea level pressure for your position at the moment the data is     *
-     * converted, as well as the ambient temperature in degress           *
-     * celcius.  If you don't have these values, a 'generic' value of     *
-     * 1013.25 hPa can be used (defined as SENSORS_PRESSURE_SEALEVELHPA   *
-     * in sensors.h), but this isn't ideal and will give variable         *
-     * results from one day to the next.                                  *
-     *                                                                    *
-     * You can usually find the current SLP value by looking at weather   *
-     * websites or from environmental information centers near any major  *
-     * airport.                                                           *
-     *                                                                    *
-     * For example, for Paris, France you can check the current mean      *
-     * pressure and sea level at: http://bit.ly/16Au8ol                   */
-     
-    /* Primero obtenemos la temperatura actual del BMP085 */
-    float temperature;
-    bmp.getTemperature(&temperature);
-    
-    #ifdef DEBUG2
-    Serial.print("Temperatura BMP180: ");
-    Serial.print(temperature);
-    Serial.println(" C");
-    #endif
-
-    /* Luego convierte la presión atmosférica, y SLP a la altitud        */
-    /* Actualice esta próxima línea con el SLP actual para obtener mejores resultados     */
-    float seaLevelPressure = SENSORS_PRESSURE_SEALEVELHPA;
-    
-    #ifdef DEBUG2
-    Serial.print("Altitud:    "); 
-    Serial.print(bmp.pressureToAltitude(seaLevelPressure,
-                                        event.pressure)); 
-    Serial.println(" m");
-    Serial.println("");
-    #endif
+    // Wait for the measurement to complete:
+    delay(status);
+    // Retrieve the completed temperature measurement:
+    // Note that the measurement is stored in the variable T.
+    // Function returns 1 if successful, 0 if failure.
+    status = pressure.getTemperature(T);
+    if (status != 0)
+    {
+      status = pressure.startPressure(3);
+      if (status != 0)
+      {
+        // Wait for the measurement to complete:
+        delay(status);
+        // Retrieve the completed pressure measurement:
+        // Note that the measurement is stored in the variable P.
+        // Note also that the function requires the previous temperature measurement (T).
+        // (If temperature is stable, you can do one temperature measurement for a number of pressure measurements.)
+        // Function returns 1 if successful, 0 if failure.
+        status = pressure.getPressure(P,T);
+        if (status != 0)
+        {
+          P2=P*0.1;
+        }
+        else Serial.println("error retrieving pressure measurement\n");
+      }
+      else Serial.println("error starting pressure measurement\n");
+    }
+    else Serial.println("error retrieving temperature measurement\n");
   }
-  else
-  {
-    Serial.println("Sensor error");
-  }
+  else Serial.println("error starting temperature measurement\n");
+  
+  return P2;
 }
 
 /*
@@ -291,7 +279,7 @@ static void envioDatosWiFi() {
   
   clouds = String(nubosidad());
   humidity = String(humedad);
-  pressure = String(event.pressure*0.1);
+  pressure = String(presion());
   rain = String(precipitacion);
   temp = String(temperatura);
   indiceUV = String(leerUV());
@@ -375,7 +363,7 @@ static void envioDatosBLE(){
   //Presión
   uint8_t prData[2];
   uint16_t prValue;
-  prValue = (uint16_t)(event.pressure*0.1*100);
+  prValue = (uint16_t)(presion()*100);
   prData[0] = prValue;
   prData[1] = prValue>>8;
   PresionCharacteristics.setValue(prData,2);
@@ -393,6 +381,7 @@ static void envioDatosBLE(){
 
 void setup () {
   Serial.begin(9600);
+  Wire.begin(27,26);
   
   // initialize digital pin LED_BUILTIN as an output.
   pinMode(2, OUTPUT);
@@ -403,12 +392,14 @@ void setup () {
   dht.begin();
 
   // Initializar el sensor BMP180
-  if(!bmp.begin())
-  {
-    // Hubo un problema al detectar el BMP085 ... verifique sus conexiones
-    Serial.print("Ooops, no detectado BMP085 ... Checar tu cableado o I2C Direccion!");
-    while(1);
-  }
+  if (pressure.begin())
+      Serial.println("BMP180 init success");
+  else{
+      // Oops, something went wrong, this is usually a connection problem,
+      // see the comments at the top of this sketch for the proper connections.
+      Serial.println("BMP180 init fail\n\n");
+      while(1); // Pause forever.
+    }
 
 // Verificación del modulo WiFi y la conexión a internet
 
@@ -444,11 +435,9 @@ void setup () {
 void loop () {
   temperatura = dht.readTemperature();
   humedad = dht.readHumidity();
-     
-  /* Obtener una nueva lectura del sensor BMP180 */ 
-  bmp.getEvent(&event);
   
-  presion();
+  //presion();
+  presion2=(presion());
   
   if(i<tiempoEnvio){
     sumaVeleta+=analogRead(pinDireccion);
@@ -481,8 +470,12 @@ void loop () {
   Serial.println("  Km/h");
   Serial.print("dirección: ");
   Serial.println(direccion);
+  Serial.print("Precipitacion");
   Serial.print(precipitacion);
   Serial.println(" mm/s");
+  Serial.print("Presión Atmosferica: ");
+  Serial.print(presion2);
+  Serial.println(" Kpa");
   #endif
 
 
