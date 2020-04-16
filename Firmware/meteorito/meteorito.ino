@@ -95,24 +95,24 @@ DHT dht(DHTPIN, DHTTYPE);
 bool _BLEClientConnected = false;
 
 #define MeteoritoService BLEUUID((uint16_t)0x181A)
+BLECharacteristic VelocidadVientoCharacteristics(BLEUUID((uint16_t) 0x2A72), BLECharacteristic::PROPERTY_READ);
+BLECharacteristic PrecipitacionCharacteristics(BLEUUID((uint16_t) 0x2A78), BLECharacteristic::PROPERTY_READ);
 BLECharacteristic TemperaturaCharacteristics(BLEUUID((uint16_t)0x2A6E), BLECharacteristic::PROPERTY_READ );
 BLECharacteristic HumedadCharacteristics(BLEUUID((uint16_t)0x2A6F), BLECharacteristic::PROPERTY_READ);
 BLECharacteristic PresionCharacteristics(BLEUUID((uint16_t)0x2A6D), BLECharacteristic::PROPERTY_READ);
 BLECharacteristic UvCharacteristics(BLEUUID((uint16_t)0x2A76), BLECharacteristic::PROPERTY_READ);
-//BLECharacteristic DireccionVientoCharacteristics(BLEUUID((uint16_t)0x2A73), BLECharacteristic::PROPERTY_READ);
 BLECharacteristic NubosidadCharacteristics(BLEUUID((uint16_t)0x2A58), BLECharacteristic::PROPERTY_READ);
-BLECharacteristic VelocidadVientoCharacteristics(BLEUUID((uint16_t) 0x2A72), BLECharacteristic::PROPERTY_READ);
-BLECharacteristic PrecipitacionCharacteristics(BLEUUID((uint16_t) 0x2A78), BLECharacteristic::PROPERTY_READ);
+//BLECharacteristic DireccionVientoCharacteristics(BLEUUID((uint16_t)0x2A73), BLECharacteristic::PROPERTY_READ);
 //BLECharacteristic AltitudCharacteristics(BLEUUID((uint16_t) 0x2A6C), BLECharacteristic::PROPERTY_READ);
 
+BLEDescriptor VelocidadVientoDescriptor(BLEUUID((uint16_t)0x290C));
+BLEDescriptor PrecipitacionDescriptor(BLEUUID((uint16_t)0x290C));
 BLEDescriptor TemperaturaDescriptor(BLEUUID((uint16_t)0x290C));
 BLEDescriptor HumedadDescriptor(BLEUUID((uint16_t)0x290C));
 BLEDescriptor PresionDescriptor(BLEUUID((uint16_t)0x290C));
 BLEDescriptor UvDescriptor(BLEUUID((uint16_t)0x290C));
-//BLEDescriptor DireccionVientoDescriptor(BLEUUID((uint16_t)0x290C));
 BLEDescriptor NubosidadDescriptor(BLEUUID((uint16_t)0x290C));
-BLEDescriptor VelocidadVientoDescriptor(BLEUUID((uint16_t)0x290C));
-BLEDescriptor PrecipitacionDescriptor(BLEUUID((uint16_t)0x290C));
+//BLEDescriptor DireccionVientoDescriptor(BLEUUID((uint16_t)0x290C));
 //BLEDescriptor AltitudDescriptor(BLEUUID((uint16_t)0x290C));
 
 class MyServerCallbacks : public BLEServerCallbacks {
@@ -159,8 +159,8 @@ void InitBLE() {
   VelocidadVientoCharacteristics.addDescriptor(&VelocidadVientoDescriptor);
 //Precipitacion
  pMeteorito->addCharacteristic(&PrecipitacionCharacteristics);
-  PrecipitacionDescriptor.setValue("Position 0 - 6");
   PrecipitacionCharacteristics.addDescriptor(&PrecipitacionDescriptor);
+    //PrecipitacionDescriptor.setValue("Position 0 - 6");
 // pHeart->addCharacteristic(&AltitudCharacteristics);
 //  AltitudCharacteristics.addDescriptor(&AltitudDescriptor);
 
@@ -375,8 +375,17 @@ static void envioDatosBLE(){
   NubosidadCharacteristics.setValue(nubo);
   NubosidadCharacteristics.notify();
 
+  //Precipitación
+  /*uint8_t raData[2];
+  uint16_t raValue;
+  raValue = (uint16_t)(precipitacion*100);
+  raData[0] = raValue;
+  raData[1] = raValue>>8;*/
+  char Preci [5];
+  dtostrf(precipitacion,3,2,Preci);
+  PrecipitacionCharacteristics.setValue(Preci);
+  PrecipitacionCharacteristics.notify(); 
 
-  //NubosidadDescriptor.setValue(nubosidad());
 }
 
 void setup () {
@@ -385,7 +394,8 @@ void setup () {
   
   // initialize digital pin LED_BUILTIN as an output.
   pinMode(2, OUTPUT);
-  
+
+  Serial.println(" ");
   Serial.println("Iniciando Estacion Meteorito");
   Serial.println("por Electronic Cats");
  
@@ -415,6 +425,7 @@ void setup () {
     }
    
 //Tu estas conectado ahora
+  Serial.println(" ");
   Serial.println("Tu estas conectado a la red WiFi");
   
   printWifiStatus();
@@ -460,22 +471,27 @@ void loop () {
   Serial.println("");
   //Mostrar variables
   Serial.print("temperatura: ");
-  Serial.println(temperatura);
+  Serial.print(temperatura);
+  Serial.println(" celsius");
   Serial.print(" humedad: ");
-  Serial.println(humedad);
+  Serial.print(humedad);
+  Serial.println(" %");
   Serial.print("UV nivel luz: "); 
   Serial.println(leerUV());
   Serial.print("Velocidad del viento: "); 
   Serial.print(velocidad,10);
   Serial.println("  Km/h");
   Serial.print("dirección: ");
-  Serial.println(direccion);
-  Serial.print("Precipitacion");
+  Serial.print(direccion);
+  Serial.println(" °");
+  Serial.print("Precipitacion: ");
   Serial.print(precipitacion);
   Serial.println(" mm/s");
   Serial.print("Presión Atmosferica: ");
   Serial.print(presion2);
   Serial.println(" Kpa");
+  Serial.print("Nubosidad: ");
+  Serial.println(nubosidad());
   #endif
 
 
