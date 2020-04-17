@@ -95,24 +95,27 @@ DHT dht(DHTPIN, DHTTYPE);
 bool _BLEClientConnected = false;
 
 #define MeteoritoService BLEUUID((uint16_t)0x181A)
+#define MeteoritoService2 BLEUUID((uint16_t)0x181B)
+
 BLECharacteristic TemperaturaCharacteristics(BLEUUID((uint16_t)0x2A6E), BLECharacteristic::PROPERTY_READ );
 BLECharacteristic HumedadCharacteristics(BLEUUID((uint16_t)0x2A6F), BLECharacteristic::PROPERTY_READ);
 BLECharacteristic PresionCharacteristics(BLEUUID((uint16_t)0x2A6D), BLECharacteristic::PROPERTY_READ);
 BLECharacteristic UvCharacteristics(BLEUUID((uint16_t)0x2A76), BLECharacteristic::PROPERTY_READ);
-//BLECharacteristic DireccionVientoCharacteristics(BLEUUID((uint16_t)0x2A73), BLECharacteristic::PROPERTY_READ);
 BLECharacteristic NubosidadCharacteristics(BLEUUID((uint16_t)0x2A58), BLECharacteristic::PROPERTY_READ);
+//
 BLECharacteristic VelocidadVientoCharacteristics(BLEUUID((uint16_t) 0x2A72), BLECharacteristic::PROPERTY_READ);
 BLECharacteristic PrecipitacionCharacteristics(BLEUUID((uint16_t) 0x2A78), BLECharacteristic::PROPERTY_READ);
+BLECharacteristic DireccionVientoCharacteristics(BLEUUID((uint16_t)0x2A73), BLECharacteristic::PROPERTY_READ);
 //BLECharacteristic AltitudCharacteristics(BLEUUID((uint16_t) 0x2A6C), BLECharacteristic::PROPERTY_READ);
 
+BLEDescriptor VelocidadVientoDescriptor(BLEUUID((uint16_t)0x290C));
+BLEDescriptor PrecipitacionDescriptor(BLEUUID((uint16_t)0x290C));
 BLEDescriptor TemperaturaDescriptor(BLEUUID((uint16_t)0x290C));
 BLEDescriptor HumedadDescriptor(BLEUUID((uint16_t)0x290C));
 BLEDescriptor PresionDescriptor(BLEUUID((uint16_t)0x290C));
 BLEDescriptor UvDescriptor(BLEUUID((uint16_t)0x290C));
-//BLEDescriptor DireccionVientoDescriptor(BLEUUID((uint16_t)0x290C));
 BLEDescriptor NubosidadDescriptor(BLEUUID((uint16_t)0x290C));
-BLEDescriptor VelocidadVientoDescriptor(BLEUUID((uint16_t)0x290C));
-BLEDescriptor PrecipitacionDescriptor(BLEUUID((uint16_t)0x290C));
+BLEDescriptor DireccionVientoDescriptor(BLEUUID((uint16_t)0x290C));
 //BLEDescriptor AltitudDescriptor(BLEUUID((uint16_t)0x290C));
 
 class MyServerCallbacks : public BLEServerCallbacks {
@@ -131,7 +134,7 @@ void InitBLE() {
   BLEServer *pServer = BLEDevice::createServer();
   pServer->setCallbacks(new MyServerCallbacks());
 
-  // Create the BLE Service
+// Create the BLE Service
   BLEService *pMeteorito = pServer->createService(MeteoritoService);
 //Caracteristica Temperatura
   pMeteorito->addCharacteristic(&TemperaturaCharacteristics);
@@ -146,26 +149,35 @@ void InitBLE() {
 //Caracteristica Uv
  pMeteorito->addCharacteristic(&UvCharacteristics);
   UvCharacteristics.addDescriptor(&UvDescriptor);
- //Caracteristica Nubosidad
+//Caracteristica Nubosidad
  pMeteorito->addCharacteristic(&NubosidadCharacteristics);
  NubosidadCharacteristics.addDescriptor(&NubosidadDescriptor);
-//Caracteristica Dirección del viento
- //pMeteorito->addCharacteristic(&DireccionVientoCharacteristics);
-  //DireccionVientoDescriptor.setValue("Position 0 - 6");
-  //DireccionVientoCharacteristics.addDescriptor(&DireccionVientoDescriptor);
-//Caracteristica Velocidad del viento
- pMeteorito->addCharacteristic(&VelocidadVientoCharacteristics);
-  VelocidadVientoDescriptor.setValue("Position 0 - 6");
-  VelocidadVientoCharacteristics.addDescriptor(&VelocidadVientoDescriptor);
-//Precipitacion
- pMeteorito->addCharacteristic(&PrecipitacionCharacteristics);
-  PrecipitacionDescriptor.setValue("Position 0 - 6");
-  PrecipitacionCharacteristics.addDescriptor(&PrecipitacionDescriptor);
-// pHeart->addCharacteristic(&AltitudCharacteristics);
-//  AltitudCharacteristics.addDescriptor(&AltitudDescriptor);
 
-  pServer->getAdvertising()->addServiceUUID(MeteoritoService);
-  pMeteorito->start();
+
+
+// Create the BLE Service
+BLEService *pMeteorito2 = pServer->createService(MeteoritoService2);
+//Caracteristica Dirección del viento
+ pMeteorito2->addCharacteristic(&DireccionVientoCharacteristics);
+ DireccionVientoCharacteristics.addDescriptor(&DireccionVientoDescriptor);
+  //DireccionVientoDescriptor.setValue("Position 0 - 6");
+//Caracteristica Velocidad del viento
+ pMeteorito2->addCharacteristic(&VelocidadVientoCharacteristics);
+ VelocidadVientoCharacteristics.addDescriptor(&VelocidadVientoDescriptor);
+  //VelocidadVientoDescriptor.setValue("Position 0 - 6");
+//Precipitacion
+ pMeteorito2->addCharacteristic(&PrecipitacionCharacteristics);
+  PrecipitacionCharacteristics.addDescriptor(&PrecipitacionDescriptor);
+    //PrecipitacionDescriptor.setValue("Position 0 - 6");
+//Altitud    
+// pMeteorito2->addCharacteristic(&AltitudCharacteristics);
+//  AltitudCharacteristics.addDescriptor(&AltitudDescriptor);*/
+
+ pServer->getAdvertising()->addServiceUUID(MeteoritoService);
+ pMeteorito->start();
+
+ pServer->getAdvertising()->addServiceUUID(MeteoritoService2);
+ pMeteorito2->start();
 
   // Start advertising
   pServer->getAdvertising()->start();
@@ -375,8 +387,33 @@ static void envioDatosBLE(){
   NubosidadCharacteristics.setValue(nubo);
   NubosidadCharacteristics.notify();
 
+  //Precipitación
+  uint8_t raData[2];
+  uint16_t raValue;
+  raValue = (uint16_t)(precipitacion*100);
+  raData[0] = raValue;
+  raData[1] = raValue>>8;
+  PrecipitacionCharacteristics.setValue(raData,2);
+  PrecipitacionCharacteristics.notify(); 
 
-  //NubosidadDescriptor.setValue(nubosidad());
+  //Velocidad del viento
+  uint8_t VvData[2];
+  uint16_t VvValue;
+  VvValue = (uint16_t)(velocidad*100);
+  VvData[0] = VvValue;
+  VvData[1] = VvValue>>8;
+  VelocidadVientoCharacteristics.setValue(VvData,2);
+  VelocidadVientoCharacteristics.notify();
+
+    //Dirección del viento
+  uint8_t DvData[2];
+  uint16_t DvValue;
+  DvValue = (uint16_t)(direccion*100);
+  DvData[0] = DvValue;
+  DvData[1] = DvValue>>8;
+  DireccionVientoCharacteristics.setValue(DvData,2);
+  DireccionVientoCharacteristics.notify();
+
 }
 
 void setup () {
@@ -385,8 +422,8 @@ void setup () {
   
   // initialize digital pin LED_BUILTIN as an output.
   pinMode(2, OUTPUT);
-  
-  Serial.println("Iniciando Estacion Meteorito");
+
+  Serial.println("\nIniciando Estacion Meteorito");
   Serial.println("por Electronic Cats");
  
   dht.begin();
@@ -415,7 +452,7 @@ void setup () {
     }
    
 //Tu estas conectado ahora
-  Serial.println("Tu estas conectado a la red WiFi");
+  Serial.println("\nTu estas conectado a la red WiFi");
   
   printWifiStatus();
 
@@ -457,25 +494,29 @@ void loop () {
   delayMicroseconds(200); 
   
   #ifdef DEBUG
-  Serial.println("");
   //Mostrar variables
-  Serial.print("temperatura: ");
-  Serial.println(temperatura);
+  Serial.print("\n temperatura: ");
+  Serial.print(temperatura);
+  Serial.println(" celsius");
   Serial.print(" humedad: ");
-  Serial.println(humedad);
+  Serial.print(humedad);
+  Serial.println(" %");
   Serial.print("UV nivel luz: "); 
   Serial.println(leerUV());
   Serial.print("Velocidad del viento: "); 
   Serial.print(velocidad,10);
   Serial.println("  Km/h");
   Serial.print("dirección: ");
-  Serial.println(direccion);
-  Serial.print("Precipitacion");
+  Serial.print(direccion);
+  Serial.println(" °");
+  Serial.print("Precipitacion: ");
   Serial.print(precipitacion);
   Serial.println(" mm/s");
   Serial.print("Presión Atmosferica: ");
   Serial.print(presion2);
   Serial.println(" Kpa");
+  Serial.print("Nubosidad: ");
+  Serial.println(nubosidad());
   #endif
 
 
