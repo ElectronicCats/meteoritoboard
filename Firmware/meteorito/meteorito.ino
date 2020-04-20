@@ -2,10 +2,14 @@
 Meteorito.ino
 Ejemplo de Estacion Meteorologica con ESP32 
 para redmet.org y Meteorito
+
 Andres Sabas @ The Inventor's House
 Brando Are @ Electronic Cats
+Ricardo Villegas @ Electronic Cats
+
+
 Fecha Original de Creación: 28 de Octubre del 2017
-Ultima Actualizacion: 16 Agosto 2019
+Ultima Actualizacion: 17 Abril 2020
 
 Este ejemplo demuestra la conexion y envio de datos 
 con un modulo ESP32 a la plataforma 
